@@ -48,13 +48,6 @@ export class Profile implements OnInit {
         const completeUser: User = {
           ...user,
           phoneNumber: user.phoneNumber || '',
-          address: user.address || {
-            street: '',
-            city: '',
-            state: '',
-            zipCode: '',
-            country: ''
-          },
           dateOfBirth: user.dateOfBirth || '',
           gender: user.gender || '',
           preferredLanguage: user.preferredLanguage || ''
@@ -73,13 +66,6 @@ export class Profile implements OnInit {
             const completeUser: User = {
               ...currentUser,
               phoneNumber: currentUser.phoneNumber || '',
-              address: currentUser.address || {
-                street: '',
-                city: '',
-                state: '',
-                zipCode: '',
-                country: ''
-              },
               dateOfBirth: currentUser.dateOfBirth || '',
               gender: currentUser.gender || '',
               preferredLanguage: currentUser.preferredLanguage || ''
@@ -110,13 +96,6 @@ export class Profile implements OnInit {
     const userToSave: User = {
       ...this.user,
       phoneNumber: this.user.phoneNumber || '',
-      address: this.user.address || {
-        street: '',
-        city: '',
-        state: '',
-        zipCode: '',
-        country: ''
-      },
       dateOfBirth: this.user.dateOfBirth || '',
       gender: this.user.gender || '',
       preferredLanguage: this.user.preferredLanguage || ''
@@ -128,13 +107,6 @@ export class Profile implements OnInit {
         const completeUser: User = {
           ...updatedUser,
           phoneNumber: updatedUser.phoneNumber || '',
-          address: updatedUser.address || {
-            street: '',
-            city: '',
-            state: '',
-            zipCode: '',
-            country: ''
-          },
           dateOfBirth: updatedUser.dateOfBirth || '',
           gender: updatedUser.gender || '',
           preferredLanguage: updatedUser.preferredLanguage || ''

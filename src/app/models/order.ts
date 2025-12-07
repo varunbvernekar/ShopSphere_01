@@ -28,4 +28,13 @@ export interface Order {
   items: OrderItem[];          // all cart items in this order
   estimatedDelivery: string;   // e.g. "10/12/2025"
   logistics: LogisticsInfo;    // tracking information
+  deliveryAddress?: Address;   // delivery address for the order
+}
+
+export interface Address {
+  street: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
 }

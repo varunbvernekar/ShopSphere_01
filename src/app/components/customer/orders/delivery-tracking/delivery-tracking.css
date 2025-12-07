@@ -252,6 +252,35 @@
   color: #111827;
 }
 
+/* Address Card */
+.address-card {
+  padding: 24px;
+}
+
+.address-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: #111827;
+}
+
+.address-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.address-line {
+  font-size: 14px;
+  color: #111827;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.address-line:first-child {
+  font-weight: 500;
+}
+
 /* Tracking Card */
 .tracking-card {
   padding: 24px;

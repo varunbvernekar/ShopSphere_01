@@ -14,8 +14,6 @@ import { CartService } from '../../../services/cart';
 import { ProductCatalog } from './product-catalog/product-catalog';
 import { ProductCustomizer } from './product-customizer/product-customizer';
 import { Cart } from './cart/cart';
-import { Order, OrderStatus } from '../../../models/order';
-import { OrderService } from '../../../services/order';
 
 type CustomerView = 'catalog' | 'customizer' | 'cart';
 
@@ -53,7 +51,6 @@ export class ProductPage implements OnInit {
     private authService: AuthService,
     private cartService: CartService,
     private route: ActivatedRoute,
-    private orderService: OrderService,
     private router: Router
   ) {}
 
@@ -282,97 +279,11 @@ export class ProductPage implements OnInit {
       alert('Your cart is empty.');
       return;
     }
-    const stockErrors: string[] = [];
-    for (const item of items) {
-      const availableStock = this.getAvailableStock(item.product);
-      const totalQuantityForProduct = this.cartService.getTotalQuantityForProduct(item.product.productId);
-      
-      if (!this.isProductInStock(item.product)) {
-        stockErrors.push(`${item.product.name} is out of stock.`);
-      } else if (totalQuantityForProduct > availableStock) {
-        stockErrors.push(`${item.product.name}: Only ${availableStock} unit(s) available, but ${totalQuantityForProduct} unit(s) in cart.`);
-      }
-    }
-
-    if (stockErrors.length > 0) {
-      alert('Cannot proceed with checkout:\n\n' + stockErrors.join('\n'));
-      return;
-    }
-    const amount = items.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    );
-
-    const today = new Date();
-    const placedOn = today.toLocaleDateString('en-IN');
-    const estimated = new Date();
-    estimated.setDate(today.getDate() + 7);
-    const estimatedDelivery = estimated.toLocaleDateString('en-IN');
-
-    const orderItems = items.map(i => ({
-      productId: i.product.productId,
-      name: i.product.name,
-      image: i.product.previewImage,
-      quantity: i.quantity,
-      color: i.customization.color,
-      size: i.customization.size,
-      material: i.customization.material,
-      price: i.price
-    }));
-
-    const payload: Omit<Order, 'id'> = {
-      userId: user.id,
-      placedOn,
-      amount,
-      status: 'Confirmed' as OrderStatus,
-      items: orderItems,
-      estimatedDelivery,
-      logistics: {
-        carrier: 'Not assigned',
-        trackingId: '-',
-        currentLocation: 'Order confirmed'
-      }
-    };
-
-    this.orderService.createOrder(payload).subscribe({
-      next: () => {
-        // Update inventory after order confirmation
-        this.updateInventoryForOrder(orderItems);
-        
-        // Trigger low stock count refresh (only in browser)
-        if (typeof window !== 'undefined') {
-          window.dispatchEvent(new CustomEvent('inventoryUpdated'));
-          window.dispatchEvent(new CustomEvent('orderUpdated'));
-        }
-        
-        alert('Order placed successfully!');
-        this.cartService.clear();
-        this.view = 'catalog';
-        this.router.navigate(['/orders']);
-      },
-      error: err => {
-        console.error('Failed to place order', err);
-        alert('Failed to place order. Please try again.');
-      }
-    });
+    
+    // Navigate to payment page instead of creating order directly
+    this.router.navigate(['/payment']);
   }
 
-  private updateInventoryForOrder(items: Array<{ productId: string; quantity: number }>): void {
-    items.forEach(item => {
-      this.productService.getProductById(item.productId).subscribe({
-        next: product => {
-          if (product && typeof product.stockLevel === 'number') {
-            const newStock = Math.max(0, product.stockLevel - item.quantity);
-            this.productService.updateStock(item.productId, newStock).subscribe({
-              next: () => console.log(`Inventory updated for ${product.name}`),
-              error: err => console.error(`Failed to update inventory for ${product.name}`, err)
-            });
-          }
-        },
-        error: err => console.error(`Failed to get product ${item.productId}`, err)
-      });
-    });
-  }
 
   viewProductInsights(product: Product): void {
     alert(`Admin: Viewing insights for "${product.name}".`);

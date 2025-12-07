@@ -56,6 +56,18 @@
     </div>
   </div>
 
+  <!-- Delivery Address -->
+  <div class="order-card address-card" *ngIf="order.deliveryAddress">
+    <h3 class="address-title">Delivery Address</h3>
+    <div class="address-details">
+      <p class="address-line">{{ order.deliveryAddress.street }}</p>
+      <p class="address-line">
+        {{ order.deliveryAddress.city }}, {{ order.deliveryAddress.state }} {{ order.deliveryAddress.zipCode }}
+      </p>
+      <p class="address-line">{{ order.deliveryAddress.country }}</p>
+    </div>
+  </div>
+
   <!-- Shipment Tracking -->
   <div class="order-card tracking-card">
     <h3 class="tracking-title">Shipment Tracking</h3>
