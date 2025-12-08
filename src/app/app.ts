@@ -3,19 +3,19 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterOutlet, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService } from './services/auth';
-import { CartService } from './services/cart';
-import { ProductService } from './services/product';
+import { AuthService } from './core/services/auth';
+import { CartService } from './core/services/cart';
+import { ProductService } from './core/services/product';
 import { Subscription } from 'rxjs';
-import { LowStockAlerts } from './components/admin/low-stock-alerts/low-stock-alerts';
-import { CustomerNotifications } from './components/customer/notifications/customer-notifications';
-import { Sidebar } from './components/shared/sidebar/sidebar';
-import { OrderService } from './services/order';
+import { LowStockAlerts } from './shared/components/low-stock-alerts/low-stock-alerts';
+import { CustomerNotifications } from './shared/components/customer-notifications/customer-notifications';
+import { Navbar } from './shared/components/navbar/navbar';
+import { OrderService } from './core/services/order';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, LowStockAlerts, CustomerNotifications, Sidebar],
+  imports: [CommonModule, RouterOutlet, LowStockAlerts, CustomerNotifications, Navbar],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
@@ -33,12 +33,12 @@ export class App implements OnInit, OnDestroy {
     public cartService: CartService,
     private productService: ProductService,
     private orderService: OrderService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadLowStockCount();
     this.loadNotificationCount();
-    
+
     // Only add event listeners in browser environment
     if (typeof window !== 'undefined') {
       // Listen for inventory updates to refresh low stock count
@@ -124,7 +124,7 @@ export class App implements OnInit, OnDestroy {
     let readNotifications: Set<string> = new Set();
     if (typeof window !== 'undefined' && window.localStorage) {
       try {
-        const stored = localStorage.getItem(`readNotifications_${user.id}`);
+        const stored = localStorage.getItem(`readNotifications_${user.id} `);
         if (stored) {
           readNotifications = new Set(JSON.parse(stored));
         }
@@ -141,21 +141,21 @@ export class App implements OnInit, OnDestroy {
           if (!order.id) return;
 
           const hasStatusUpdate = order.status !== 'Confirmed';
-          const hasTracking = order.logistics && 
-                             order.logistics.trackingId && 
-                             order.logistics.trackingId !== '-' && 
-                             order.logistics.carrier !== 'Not assigned';
+          const hasTracking = order.logistics &&
+            order.logistics.trackingId &&
+            order.logistics.trackingId !== '-' &&
+            order.logistics.carrier !== 'Not assigned';
 
           if (hasStatusUpdate || hasTracking) {
             // Check if order notification is read
-            const orderNotificationId = `order_${order.id}_${order.status}`;
+            const orderNotificationId = `order_${order.id}_${order.status} `;
             if (!readNotifications.has(orderNotificationId)) {
               unreadCount++;
             }
 
             // Check if shipment notification is read
             if (hasTracking && (order.status === 'Shipped' || order.status === 'Delivered')) {
-              const shipmentNotificationId = `shipment_${order.id}`;
+              const shipmentNotificationId = `shipment_${order.id} `;
               if (!readNotifications.has(shipmentNotificationId)) {
                 unreadCount++;
               }

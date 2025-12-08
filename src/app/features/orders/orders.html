@@ -1,0 +1,136 @@
+<div class="orders-page">
+  <header class="orders-header">
+    <h1>Order Tracking</h1>
+    <p *ngIf="!isAdmin">Track your orders and view delivery status</p>
+    <p *ngIf="isAdmin">Manage all customer orders and update tracking details</p>
+  </header>
+
+  <!-- Loading / error -->
+  <div *ngIf="isLoading" class="orders-loading">
+    Loading orders...
+  </div>
+  <div *ngIf="!isLoading && errorMessage" class="orders-error">
+    {{ errorMessage }}
+  </div>
+
+  <!-- CUSTOMER VIEW -->
+  <ng-container *ngIf="!isAdmin && !isLoading && !errorMessage; else adminView">
+    <div class="orders-layout" *ngIf="orders.length > 0; else noOrdersCustomer">
+      <!-- Left: order list -->
+      <aside class="orders-list">
+        <h2 class="panel-title">Your Orders</h2>
+
+        <div *ngFor="let order of orders" class="order-list-item" [class.active]="order === selectedOrder"
+          (click)="selectOrder(order)">
+          <div class="order-list-content">
+            <div class="order-list-header">
+              <div class="order-id">{{ getOrderId(order) }}</div>
+              <div class="order-status-chip" [ngClass]="order.status">
+                {{ order.status }}
+              </div>
+            </div>
+
+            <div class="order-list-meta">
+              <span class="order-date">{{ order.placedOn }}</span>
+              <span class="order-price">${{ order.amount }}</span>
+            </div>
+          </div>
+          <div class="order-status-icon" [ngClass]="order.status">
+            {{ getStatusIcon(order.status) }}
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right: details -->
+      <section class="orders-detail" *ngIf="selectedOrder; else emptyState">
+        <div class="detail-header"
+          style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid #eee;">
+          <h2>Order #{{ getOrderId(selectedOrder) }}</h2>
+          <button class="cancel-btn"
+            style="background: #ff4444; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;"
+            *ngIf="selectedOrder.status === 'Confirmed' || selectedOrder.status === 'Packed'"
+            (click)="cancelOrder(selectedOrder)">
+            Cancel Order
+          </button>
+        </div>
+        <app-delivery-tracking [order]="selectedOrder"></app-delivery-tracking>
+      </section>
+
+      <!-- Placeholder when nothing selected -->
+      <ng-template #emptyState>
+        <section class="orders-detail empty">
+          <div class="empty-box">
+            <div class="empty-icon">📦</div>
+            <p>Select an order to view details</p>
+          </div>
+        </section>
+      </ng-template>
+    </div>
+
+    <ng-template #noOrdersCustomer>
+      <section class="orders-detail empty">
+        <div class="empty-box">
+          <div class="empty-icon">🛒</div>
+          <p>You have not placed any orders yet.</p>
+        </div>
+      </section>
+    </ng-template>
+  </ng-container>
+
+  <!-- ADMIN VIEW -->
+  <ng-template #adminView>
+    <div class="admin-orders" *ngIf="!isLoading && !errorMessage">
+      <h2 class="panel-title">All Customer Orders</h2>
+
+      <div *ngIf="orders.length === 0" class="empty-box">
+        <div class="empty-icon">📦</div>
+        <p>No orders placed yet.</p>
+      </div>
+
+      <table *ngIf="orders.length > 0" class="admin-orders-table">
+        <thead>
+          <tr>
+            <th>Order #</th>
+            <th>User ID</th>
+            <th>Placed On</th>
+            <th>Total (₹)</th>
+            <th>Status</th>
+            <th>Carrier</th>
+            <th>Tracking ID</th>
+            <th>Current Location</th>
+            <th>Save</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders">
+            <td>#{{ order.id }}</td>
+            <td>{{ order.userId }}</td>
+            <td>{{ order.placedOn }}</td>
+            <td>{{ order.amount }}</td>
+            <td>
+              <select [(ngModel)]="order.status" (change)="onAdminStatusChange(order, order.status)">
+                <option *ngFor="let step of orderSteps" [value]="step">
+                  {{ step }}
+                </option>
+              </select>
+            </td>
+            <td>
+              <input type="text" [(ngModel)]="order.logistics.carrier" placeholder="e.g. Shiprocket" />
+            </td>
+            <td>
+              <input type="text" [(ngModel)]="order.logistics.trackingId" placeholder="Tracking ID" />
+            </td>
+            <td>
+              <input type="text" [(ngModel)]="order.logistics.currentLocation" placeholder="Current location" />
+            </td>
+            <td>
+              <button type="button" class="admin-save-btn" (click)="onAdminLogisticsChange(order)">
+                Save
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-template>
+</div>

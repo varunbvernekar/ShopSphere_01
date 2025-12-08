@@ -1,23 +1,25 @@
 // src/app/app.routes.ts
 
 import { Routes } from '@angular/router';
-import { Login } from './components/auth/login/login';
-import { Register } from './components/auth/register/register';
-import { Landing } from './components/landing/landing';
-import { ProductPage } from './components/customer/product-page/product-page';
-import { OrdersPage } from './components/customer/orders/orders';
-import { Profile } from './components/customer/profile/profile';
-import { Payment } from './components/customer/payment/payment';
-import { authGuard } from './guards/auth-guard';
-import { adminGuard } from './guards/admin-guard';
-import { AdminDashboard } from './components/admin/admin-dashboard/admin-dashboard';
-import { AdminInventory } from './components/admin/admin-inventory/admin-inventory';
+import { Login } from './features/auth/login/login';
+import { Register } from './features/auth/register/register';
+import { Home } from './features/home/home';
+import { CartPage } from './features/shop/cart-page/cart-page';
+import { ProductPage } from './features/shop/product-page';
+import { OrdersPage } from './features/orders/orders';
+import { Profile } from './features/profile/profile';
+import { Payment } from './features/payment/payment';
+import { authGuard } from './core/guards/auth-guard';
+import { adminGuard } from './core/guards/admin-guard';
+import { AdminDashboard } from './features/admin/admin-dashboard/admin-dashboard';
+import { AdminInventory } from './features/admin/admin-inventory/admin-inventory';
 
 export const routes: Routes = [
-  { path: '', component: Landing },
+  { path: '', component: Home },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   { path: 'products', component: ProductPage, canActivate: [authGuard] },
+  { path: 'cart', component: CartPage, canActivate: [authGuard] },
   { path: 'orders', component: OrdersPage, canActivate: [authGuard] },
   { path: 'profile', component: Profile, canActivate: [authGuard] },
   { path: 'payment', component: Payment, canActivate: [authGuard] },

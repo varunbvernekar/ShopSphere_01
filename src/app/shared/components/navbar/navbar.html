@@ -1,0 +1,53 @@
+<nav class="navbar">
+    <div class="navbar-container">
+        <a routerLink="/" class="navbar-logo">
+            <span class="logo-icon">🔷</span>
+            <span class="logo-text">{{ appTitle }}</span>
+        </a>
+
+
+
+        <ul class="navbar-links">
+            <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+
+            <ng-container *ngIf="!isAdmin">
+                <li><a routerLink="/products" routerLinkActive="active">Products</a></li>
+                <li><a routerLink="/orders" routerLinkActive="active">Orders</a></li>
+            </ng-container>
+
+            <ng-container *ngIf="isAdmin">
+                <li><a routerLink="/admin" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{exact: true}">Dashboard</a></li>
+                <li><a routerLink="/orders" routerLinkActive="active">Orders</a></li>
+                <li><a routerLink="/admin/inventory" routerLinkActive="active">Inventory</a></li>
+            </ng-container>
+        </ul>
+
+        <div class="navbar-actions">
+            <ng-container *ngIf="isAdmin">
+                <button class="icon-btn" (click)="openLowStockAlerts()" title="Low Stock Alerts">
+                    ⚠️
+                    <span class="badge warning" *ngIf="lowStockCount > 0">{{ lowStockCount }}</span>
+                </button>
+            </ng-container>
+
+            <ng-container *ngIf="!isAdmin">
+                <button class="icon-btn" (click)="openNotifications()" title="Notifications">
+                    🔔
+                    <span class="badge info" *ngIf="notificationCount > 0">{{ notificationCount }}</span>
+                </button>
+
+                <a routerLink="/cart" class="icon-btn" title="Cart">
+                    🛒
+                    <span class="badge success" *ngIf="cartCount > 0">{{ cartCount }}</span>
+                </a>
+
+                <a routerLink="/profile" class="icon-btn" title="Profile">
+                    👤
+                </a>
+            </ng-container>
+
+            <button class="btn-logout" (click)="logout()">Logout</button>
+        </div>
+    </div>
+</nav>

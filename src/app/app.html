@@ -1,15 +1,9 @@
 <!-- src/app/app.html -->
 
 <div class="app-layout" *ngIf="isLoggedIn">
-  <app-sidebar
-    [isAdmin]="isAdmin"
-    [lowStockCount]="lowStockCount"
-    [notificationCount]="notificationCount"
-    [cartCount]="cartCount"
-    (openLowStockAlertsEvent)="openLowStockAlerts()"
-    (openNotificationsEvent)="openNotifications()"
-    (logoutEvent)="logout()"
-  ></app-sidebar>
+  <app-navbar [isAdmin]="isAdmin" [lowStockCount]="lowStockCount" [notificationCount]="notificationCount"
+    [cartCount]="cartCount" (openLowStockAlertsEvent)="openLowStockAlerts()"
+    (openNotificationsEvent)="openNotifications()" (logoutEvent)="logout()"></app-navbar>
 
   <main class="main-content">
     <router-outlet></router-outlet>
@@ -21,15 +15,9 @@
 </div>
 
 <!-- Low Stock Alerts Modal -->
-<app-low-stock-alerts
-  *ngIf="isAdmin"
-  [isOpen]="showLowStockModal"
-  (closeEvent)="closeLowStockAlerts()"
-></app-low-stock-alerts>
+<app-low-stock-alerts *ngIf="isAdmin" [isOpen]="showLowStockModal"
+  (closeEvent)="closeLowStockAlerts()"></app-low-stock-alerts>
 
 <!-- Customer Notifications Modal -->
-<app-customer-notifications
-  *ngIf="!isAdmin"
-  [isOpen]="showNotificationsModal"
-  (closeEvent)="closeNotifications()"
-></app-customer-notifications>
+<app-customer-notifications *ngIf="!isAdmin" [isOpen]="showNotificationsModal"
+  (closeEvent)="closeNotifications()"></app-customer-notifications>

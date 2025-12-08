@@ -14,7 +14,7 @@ import {
   HTTP_INTERCEPTORS,
   withFetch
 } from '@angular/common/http';
-import { AuthInterceptor } from './interceptors/auth-interceptor';
+import { AuthInterceptor } from './core/interceptors/auth-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,11 +27,11 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
 
     // ✅ HTTP + interceptor (class-based)
-     provideHttpClient(withFetch(), withInterceptorsFromDi()),
-  {
-    provide: HTTP_INTERCEPTORS,
-    useClass: AuthInterceptor,
-    multi: true
-  }
+    provideHttpClient(withFetch(), withInterceptorsFromDi()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ]
 };

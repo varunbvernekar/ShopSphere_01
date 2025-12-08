@@ -22,11 +22,10 @@
               {
                 "glob": "**/*",
                 "input": "public"
-                
               },
               "src/favicon.ico",
-            "src/assets",
-            "src/assets/images"
+              "src/assets",
+              "src/assets/images"
             ],
             "styles": [
               "src/styles.css"
@@ -47,8 +46,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "10kB",
+                  "maximumError": "12kB"
                 }
               ],
               "outputHashing": "all"
@@ -97,5 +96,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

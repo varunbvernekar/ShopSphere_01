@@ -1,0 +1,5 @@
+<div class="cart-page-container">
+    <app-cart [items]="cartService.getItems()" (updateQuantity)="onUpdateQuantity($event)"
+        (removeItem)="onRemoveItem($event)" (continueShopping)="onContinueShopping()" (checkout)="onCheckout()">
+    </app-cart>
+</div>

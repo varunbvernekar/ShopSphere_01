@@ -1,0 +1,11 @@
+.cart-page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Ensure the cart component inside takes full width/height as needed */
+app-cart {
+    display: block;
+    width: 100%;
+}
