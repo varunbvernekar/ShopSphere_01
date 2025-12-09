@@ -1,18 +1,18 @@
 // src/app/app.routes.ts
 
 import { Routes } from '@angular/router';
-import { Login } from './features/auth/login/login';
-import { Register } from './features/auth/register/register';
-import { Home } from './features/home/home';
-import { CartPage } from './features/shop/cart-page/cart-page';
-import { ProductPage } from './features/shop/product-page';
-import { OrdersPage } from './features/orders/orders';
-import { Profile } from './features/profile/profile';
-import { Payment } from './features/payment/payment';
+import { Login } from './components/auth/login/login';
+import { Register } from './components/auth/register/register';
+import { Home } from './components/home/home';
+import { CartPage } from './components/shop/cart-page/cart-page';
+import { ProductPage } from './components/shop/product-page';
+import { OrdersPage } from './components/orders/orders';
+import { Profile } from './components/profile/profile';
+import { Payment } from './components/payment/payment';
 import { authGuard } from './core/guards/auth-guard';
 import { adminGuard } from './core/guards/admin-guard';
-import { AdminDashboard } from './features/admin/admin-dashboard/admin-dashboard';
-import { AdminInventory } from './features/admin/admin-inventory/admin-inventory';
+import { AdminDashboard } from './components/admin/admin-dashboard/admin-dashboard';
+import { AdminInventory } from './components/admin/admin-inventory/admin-inventory';
 
 export const routes: Routes = [
   { path: '', component: Home },

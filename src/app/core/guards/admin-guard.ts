@@ -1,16 +1,22 @@
 // src/app/guards/admin-guard.ts
 
-import { inject } from '@angular/core';
+import { inject, PLATFORM_ID } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
+import { isPlatformServer } from '@angular/common';
 import { AuthService } from '../services/auth';
 
 export const adminGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
+  const platformId = inject(PLATFORM_ID);
 
-  const user = authService.getCurrentUser();
+  if (isPlatformServer(platformId)) {
+    return true;
+  }
 
-  if (user && user.role === 'ADMIN') {
+  const authUser = authService.getCurrentUser();
+
+  if (authUser && authUser.role === 'ADMIN') {
     return true;
   }
 

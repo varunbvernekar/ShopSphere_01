@@ -4,10 +4,11 @@
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
       <div class="modal-title-section">
-        <span class="warning-icon">⚠️</span>
+        <span class="warning-icon"><span class="material-symbols-rounded">warning</span></span>
         <h2 class="modal-title">Low Stock Alerts</h2>
       </div>
-      <button class="close-btn" (click)="close()" aria-label="Close">×</button>
+      <button class="close-btn" (click)="close()" aria-label="Close"><span
+          class="material-symbols-rounded">close</span></button>
     </div>
 
     <div class="modal-subtitle" *ngIf="lowStockProducts.length > 0">
@@ -16,7 +17,7 @@
 
     <div class="modal-body">
       <div *ngIf="lowStockProducts.length === 0" class="no-alerts">
-        <div class="no-alerts-icon">✅</div>
+        <div class="no-alerts-icon"><span class="material-symbols-rounded">check_circle</span></div>
         <p>All products are well stocked!</p>
       </div>
 
@@ -37,4 +38,3 @@
     </div>
   </div>
 </div>
-

@@ -13,6 +13,8 @@ import { Navbar } from './shared/components/navbar/navbar';
 import { Footer } from './shared/components/footer/footer';
 import { OrderService } from './core/services/order';
 
+import { NotificationService } from './core/services/notification';
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -26,19 +28,30 @@ export class App implements OnInit, OnDestroy {
   notificationCount = 0;
   showNotificationsModal = false;
   private productsSubscription?: Subscription;
-  private ordersSubscription?: Subscription;
+  private notifSubscription?: Subscription;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     public cartService: CartService,
     private productService: ProductService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
     this.loadLowStockCount();
-    this.loadNotificationCount();
+
+    // Subscribe to notification service
+    this.notifSubscription = this.notificationService.unreadCount$.subscribe(
+      count => this.notificationCount = count
+    );
+
+    // Initialize service with current user if logged in
+    const user = this.authService.getCurrentUser();
+    if (user && user.id) {
+      this.notificationService.loadForUser(user.id);
+    }
 
     // Only add event listeners in browser environment
     if (typeof window !== 'undefined') {
@@ -47,9 +60,12 @@ export class App implements OnInit, OnDestroy {
         this.loadLowStockCount();
       });
 
-      // Listen for order updates to refresh notification count
+      // Order updates might now be handled by global polling or service logic
+      // But keeping listener if needed, though NotificationService should auto-update if it polls
+      // For now, let's ensure we reload if an event fires
       window.addEventListener('orderUpdated', () => {
-        this.loadNotificationCount();
+        const u = this.authService.getCurrentUser();
+        if (u?.id) this.notificationService.loadForUser(u.id); // Triggers reload
       });
     }
   }
@@ -58,8 +74,8 @@ export class App implements OnInit, OnDestroy {
     if (this.productsSubscription) {
       this.productsSubscription.unsubscribe();
     }
-    if (this.ordersSubscription) {
-      this.ordersSubscription.unsubscribe();
+    if (this.notifSubscription) {
+      this.notifSubscription.unsubscribe();
     }
   }
 
@@ -110,82 +126,18 @@ export class App implements OnInit, OnDestroy {
     this.showLowStockModal = false;
   }
 
-  loadNotificationCount(): void {
-    const user = this.authService.getCurrentUser();
-    if (!user || !user.id || user.role !== 'CUSTOMER') {
-      this.notificationCount = 0;
-      return;
-    }
-
-    if (this.ordersSubscription) {
-      this.ordersSubscription.unsubscribe();
-    }
-
-    // Load read notifications from localStorage (only in browser)
-    let readNotifications: Set<string> = new Set();
-    if (typeof window !== 'undefined' && window.localStorage) {
-      try {
-        const stored = localStorage.getItem(`readNotifications_${user.id} `);
-        if (stored) {
-          readNotifications = new Set(JSON.parse(stored));
-        }
-      } catch (e) {
-        console.error('Failed to load read notifications', e);
-      }
-    }
-
-    this.ordersSubscription = this.orderService.getOrdersForUser(user.id).subscribe({
-      next: orders => {
-        // Count unread notifications (orders with status updates or shipment tracking info)
-        let unreadCount = 0;
-        orders.forEach(order => {
-          if (!order.id) return;
-
-          const hasStatusUpdate = order.status !== 'Confirmed';
-          const hasTracking = order.logistics &&
-            order.logistics.trackingId &&
-            order.logistics.trackingId !== '-' &&
-            order.logistics.carrier !== 'Not assigned';
-
-          if (hasStatusUpdate || hasTracking) {
-            // Check if order notification is read
-            const orderNotificationId = `order_${order.id}_${order.status} `;
-            if (!readNotifications.has(orderNotificationId)) {
-              unreadCount++;
-            }
-
-            // Check if shipment notification is read
-            if (hasTracking && (order.status === 'Shipped' || order.status === 'Delivered')) {
-              const shipmentNotificationId = `shipment_${order.id} `;
-              if (!readNotifications.has(shipmentNotificationId)) {
-                unreadCount++;
-              }
-            }
-          }
-        });
-
-        this.notificationCount = unreadCount;
-      },
-      error: err => {
-        console.error('Failed to load notification count', err);
-        this.notificationCount = 0;
-      }
-    });
-  }
-
   openNotifications(): void {
     this.showNotificationsModal = true;
   }
 
   closeNotifications(): void {
     this.showNotificationsModal = false;
-    // Refresh notification count after closing modal (in case notifications were marked as read)
-    this.loadNotificationCount();
   }
 
   logout(): void {
     this.authService.logout();
     this.cartService.clear();
+    this.notificationService.clear();
     this.router.navigate(['/login']);
   }
 }

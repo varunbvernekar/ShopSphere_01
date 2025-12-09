@@ -4,10 +4,11 @@
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
       <div class="modal-title-section">
-        <span class="notification-icon">🔔</span>
+        <span class="notification-icon"><span class="material-symbols-rounded">notifications</span></span>
         <h2 class="modal-title">Order & Shipment Updates</h2>
       </div>
-      <button class="close-btn" (click)="close()" aria-label="Close">×</button>
+      <button class="close-btn" (click)="close()" aria-label="Close"><span
+          class="material-symbols-rounded">close</span></button>
     </div>
 
     <div class="modal-subtitle" *ngIf="notifications.length > 0">
@@ -16,19 +17,15 @@
 
     <div class="modal-body">
       <div *ngIf="notifications.length === 0" class="no-notifications">
-        <div class="no-notifications-icon">📭</div>
+        <div class="no-notifications-icon"><span class="material-symbols-rounded">notifications_off</span></div>
         <p>No new notifications at this time.</p>
         <p class="sub-text">You'll be notified when your orders are updated or shipped.</p>
       </div>
 
       <div class="notifications-list" *ngIf="notifications.length > 0">
-        <div 
-          class="notification-item" 
-          *ngFor="let notification of notifications" 
-          [style.border-left-color]="getStatusColor(notification.status)"
-          [class.notification-read]="notification.read"
-          (click)="markAsRead(notification)"
-        >
+        <div class="notification-item" *ngFor="let notification of notifications"
+          [style.border-left-color]="getStatusColor(notification.status)" [class.notification-read]="notification.read"
+          (click)="markAsRead(notification)">
           <div class="notification-icon-wrapper">
             <span class="status-icon">{{ getStatusIcon(notification.status) }}</span>
           </div>
@@ -39,6 +36,10 @@
                 <div class="notification-order-number">{{ notification.orderNumber }}</div>
               </div>
               <div class="notification-type-badge" [style.background-color]="getStatusColor(notification.status)">
+                <span class="material-symbols-rounded"
+                  style="font-size: 14px; vertical-align: middle; margin-right: 4px;">
+                  {{ notification.type === 'order' ? 'shopping_bag' : 'local_shipping' }}
+                </span>
                 {{ notification.type === 'order' ? 'Order Update' : 'Shipment Update' }}
               </div>
             </div>
@@ -49,7 +50,9 @@
               </span>
               <span class="notification-timestamp">{{ notification.timestamp }}</span>
             </div>
-            <div *ngIf="notification.logistics && notification.logistics.trackingId && notification.logistics.trackingId !== '-'" class="notification-tracking">
+            <div
+              *ngIf="notification.logistics && notification.logistics.trackingId && notification.logistics.trackingId !== '-'"
+              class="notification-tracking">
               <span class="tracking-label">Tracking:</span>
               <span class="tracking-id">{{ notification.logistics.trackingId }}</span>
               <span class="tracking-location">{{ notification.logistics.currentLocation }}</span>
@@ -64,4 +67,3 @@
     </div>
   </div>
 </div>
-

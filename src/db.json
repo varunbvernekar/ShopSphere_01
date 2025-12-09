@@ -81,12 +81,12 @@
         "zipCode": "",
         "country": ""
       },
-      "dateOfBirth": "",
-      "gender": "",
+      "dateOfBirth": "2025-12-11",
+      "gender": "Male",
       "preferredLanguage": "English"
     },
     {
-      "id": 7,
+      "id": "7",
       "name": "aaa",
       "email": "aaa@gmail.com",
       "phoneNumber": "+918951732222",
@@ -108,10 +108,10 @@
     {
       "id": "P001",
       "productId": "P001",
-      "name": "Handcrafted Silver Ring",
+      "name": "Handcrafted Silver Ring,",
       "description": "Elegant silver ring with handcrafted detailing.",
       "category": "Jewelry",
-      "basePrice": 120,
+      "basePrice": 1200,
       "previewImage": "/assets/images/ring.jpg",
       "stockLevel": 41,
       "reorderThreshold": 15,
@@ -156,7 +156,7 @@
       "category": "Accessories",
       "basePrice": 60,
       "previewImage": "/assets/images/wallet.jpg",
-      "stockLevel": 5,
+      "stockLevel": 4,
       "reorderThreshold": 10,
       "isActive": true,
       "customOptions": [
@@ -189,12 +189,10 @@
         {
           "type": "material",
           "values": [
-            "Standard",
-            "Premium"
+            "Standard"
           ],
           "priceAdjustment": {
-            "Standard": 0,
-            "Premium": 25
+            "Standard": 0
           }
         }
       ]
@@ -258,9 +256,48 @@
       "category": "Kitchen",
       "basePrice": 45,
       "previewImage": "/assets/images/wooden_tray.jpg",
-      "stockLevel": 18,
+      "stockLevel": 16,
       "reorderThreshold": 6,
-      "isActive": true
+      "isActive": false,
+      "customOptions": [
+        {
+          "type": "colour",
+          "values": [
+            "Silver",
+            "Gold",
+            "Rose Gold"
+          ],
+          "priceAdjustment": {
+            "Silver": 0,
+            "Gold": 15,
+            "Rose Gold": 10
+          }
+        },
+        {
+          "type": "size",
+          "values": [
+            "Small",
+            "Medium",
+            "Large"
+          ],
+          "priceAdjustment": {
+            "Small": -5,
+            "Medium": 0,
+            "Large": 10
+          }
+        },
+        {
+          "type": "material",
+          "values": [
+            "Standard",
+            "Premium"
+          ],
+          "priceAdjustment": {
+            "Standard": 0,
+            "Premium": 25
+          }
+        }
+      ]
     },
     {
       "id": "P009",
@@ -282,9 +319,48 @@
       "category": "Home Decor",
       "basePrice": 35,
       "previewImage": "/assets/images/plant_stand.png",
-      "stockLevel": 15,
+      "stockLevel": 13,
       "reorderThreshold": 5,
-      "isActive": true
+      "isActive": true,
+      "customOptions": [
+        {
+          "type": "colour",
+          "values": [
+            "Silver",
+            "Gold",
+            "Rose Gold"
+          ],
+          "priceAdjustment": {
+            "Silver": 0,
+            "Gold": 15,
+            "Rose Gold": 10
+          }
+        },
+        {
+          "type": "size",
+          "values": [
+            "Small",
+            "Medium",
+            "Large"
+          ],
+          "priceAdjustment": {
+            "Small": -5,
+            "Medium": 0,
+            "Large": 10
+          }
+        },
+        {
+          "type": "material",
+          "values": [
+            "Standard",
+            "Premium"
+          ],
+          "priceAdjustment": {
+            "Standard": 0,
+            "Premium": 25
+          }
+        }
+      ]
     },
     {
       "id": "P011",
@@ -294,9 +370,48 @@
       "category": "Home Decor",
       "basePrice": 65,
       "previewImage": "/assets/images/pottery.png",
-      "stockLevel": 12,
+      "stockLevel": 11,
       "reorderThreshold": 4,
-      "isActive": true
+      "isActive": true,
+      "customOptions": [
+        {
+          "type": "colour",
+          "values": [
+            "Silver",
+            "Gold",
+            "Rose Gold"
+          ],
+          "priceAdjustment": {
+            "Silver": 0,
+            "Gold": 15,
+            "Rose Gold": 10
+          }
+        },
+        {
+          "type": "size",
+          "values": [
+            "Small",
+            "Medium",
+            "Large"
+          ],
+          "priceAdjustment": {
+            "Small": -5,
+            "Medium": 0,
+            "Large": 10
+          }
+        },
+        {
+          "type": "material",
+          "values": [
+            "Standard",
+            "Premium"
+          ],
+          "priceAdjustment": {
+            "Standard": 0,
+            "Premium": 25
+          }
+        }
+      ]
     },
     {
       "id": "P012",
@@ -400,6 +515,198 @@
           "size": "Small",
           "material": "Standard",
           "price": 75
+        }
+      ],
+      "estimatedDelivery": "16/12/2025",
+      "logistics": {
+        "carrier": "Not assigned",
+        "trackingId": "-",
+        "currentLocation": "Order confirmed"
+      },
+      "deliveryAddress": {
+        "street": "LIG 6 2nd phase housing board",
+        "city": "Chikmagalur",
+        "state": "Karnataka",
+        "zipCode": "577102",
+        "country": "India"
+      }
+    },
+    {
+      "id": "de7f",
+      "userId": "6",
+      "placedOn": "9/12/2025",
+      "amount": 75.5,
+      "status": "Cancelled",
+      "items": [
+        {
+          "productId": "P006",
+          "name": "Wooden Serving Tray",
+          "image": "/assets/images/wooden_tray.jpg",
+          "quantity": 1,
+          "color": "Gold",
+          "size": "Small",
+          "material": "Standard",
+          "price": 55
+        }
+      ],
+      "estimatedDelivery": "16/12/2025",
+      "logistics": {
+        "carrier": "Not assigned",
+        "trackingId": "-",
+        "currentLocation": "Order confirmed"
+      },
+      "deliveryAddress": {
+        "street": "LIG 6 2nd phase housing board",
+        "city": "Chikmagalur",
+        "state": "Karnataka",
+        "zipCode": "577102",
+        "country": "India"
+      }
+    },
+    {
+      "id": "4f94",
+      "userId": "6",
+      "placedOn": "9/12/2025",
+      "amount": 75.5,
+      "status": "Cancelled",
+      "items": [
+        {
+          "productId": "P003",
+          "name": "Custom Leather Wallet",
+          "image": "/assets/images/wallet.jpg",
+          "quantity": 1,
+          "color": "Silver",
+          "size": "Small",
+          "material": "Standard",
+          "price": 55
+        }
+      ],
+      "estimatedDelivery": "16/12/2025",
+      "logistics": {
+        "carrier": "Not assigned",
+        "trackingId": "-",
+        "currentLocation": "Order confirmed"
+      },
+      "deliveryAddress": {
+        "street": "LIG 6 2nd phase housing boardmmmm",
+        "city": "aaaChikmagalur",
+        "state": "Karnataka",
+        "zipCode": "577102",
+        "country": "India"
+      }
+    },
+    {
+      "id": "6c25",
+      "userId": "6",
+      "placedOn": "9/12/2025",
+      "amount": 81,
+      "status": "Packed",
+      "items": [
+        {
+          "productId": "P011",
+          "name": "Artisan Ceramic Bowl Set",
+          "image": "/assets/images/pottery.png",
+          "quantity": 1,
+          "color": "Silver",
+          "size": "Small",
+          "material": "Standard",
+          "price": 60
+        }
+      ],
+      "estimatedDelivery": "16/12/2025",
+      "logistics": {
+        "carrier": "Not assigned",
+        "trackingId": "-",
+        "currentLocation": "Order confirmed"
+      },
+      "deliveryAddress": {
+        "street": "LIG 6 2nd phase housing board",
+        "city": "Chikmagalur",
+        "state": "Karnataka",
+        "zipCode": "577102",
+        "country": "India"
+      }
+    },
+    {
+      "id": "4d5e",
+      "userId": "6",
+      "placedOn": "9/12/2025",
+      "amount": 48,
+      "status": "Shipped",
+      "items": [
+        {
+          "productId": "P010",
+          "name": "Mid-Century Bamboo Plant Stand",
+          "image": "/assets/images/plant_stand.png",
+          "quantity": 1,
+          "color": "Silver",
+          "size": "Small",
+          "material": "Standard",
+          "price": 30
+        }
+      ],
+      "estimatedDelivery": "16/12/2025",
+      "logistics": {
+        "carrier": "Not assigned",
+        "trackingId": "-",
+        "currentLocation": "Order confirmed"
+      },
+      "deliveryAddress": {
+        "street": "LIG 6 2nd phase housing board",
+        "city": "Chikmagalur",
+        "state": "Karnataka",
+        "zipCode": "577102",
+        "country": "India"
+      }
+    },
+    {
+      "id": "e3a9",
+      "userId": "6",
+      "placedOn": "9/12/2025",
+      "amount": 59,
+      "status": "Confirmed",
+      "items": [
+        {
+          "productId": "P006",
+          "name": "Wooden Serving Tray",
+          "image": "/assets/images/wooden_tray.jpg",
+          "quantity": 1,
+          "color": "Silver",
+          "size": "Small",
+          "material": "Standard",
+          "price": 40
+        }
+      ],
+      "estimatedDelivery": "16/12/2025",
+      "logistics": {
+        "carrier": "Not assigned",
+        "trackingId": "-",
+        "currentLocation": "Order confirmed"
+      },
+      "deliveryAddress": {
+        "street": "LIG 6 2nd phase housing board",
+        "city": "Chikmagalur",
+        "state": "Karnataka",
+        "zipCode": "577102",
+        "country": "India"
+      }
+    },
+    {
+      "id": "c091",
+      "userId": "6",
+      "placedOn": "9/12/2025",
+      "amount": 48,
+      "status": "Confirmed",
+      "items": [
+        {
+          "productId": "P010",
+          "name": "Mid-Century Bamboo Plant Stand",
+          "image": "/assets/images/plant_stand.png",
+          "quantity": 1,
+          "color": "Silver",
+          "size": "Small",
+          "material": "Standard",
+          "price": 30
         }
       ],
       "estimatedDelivery": "16/12/2025",

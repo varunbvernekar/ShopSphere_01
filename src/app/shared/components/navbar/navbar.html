@@ -26,24 +26,24 @@
         <div class="navbar-actions">
             <ng-container *ngIf="isAdmin">
                 <button class="icon-btn" (click)="openLowStockAlerts()" title="Low Stock Alerts">
-                    ⚠️
+                    <span class="material-symbols-rounded">warning</span>
                     <span class="badge warning" *ngIf="lowStockCount > 0">{{ lowStockCount }}</span>
                 </button>
             </ng-container>
 
             <ng-container *ngIf="!isAdmin">
                 <button class="icon-btn" (click)="openNotifications()" title="Notifications">
-                    🔔
+                    <span class="material-symbols-rounded">notifications</span>
                     <span class="badge info" *ngIf="notificationCount > 0">{{ notificationCount }}</span>
                 </button>
 
                 <a routerLink="/cart" class="icon-btn" title="Cart">
-                    🛒
+                    <span class="material-symbols-rounded">shopping_cart</span>
                     <span class="badge success" *ngIf="cartCount > 0">{{ cartCount }}</span>
                 </a>
 
                 <a routerLink="/profile" class="icon-btn" title="Profile">
-                    👤
+                    <span class="material-symbols-rounded">person</span>
                 </a>
             </ng-container>
 

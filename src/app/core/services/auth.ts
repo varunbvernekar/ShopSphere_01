@@ -8,20 +8,15 @@ import { Observable, of, map, switchMap } from 'rxjs';
 })
 export class AuthService {
   private currentUser: User | null = null;
-
+  private readonly tokenKey = 'auth_token';
   private readonly apiUrl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {
-    // Restore user from localStorage if available
+    // Restore user from token if available
     if (typeof window !== 'undefined' && window.localStorage) {
-      const stored = localStorage.getItem('currentUser');
-      if (stored) {
-        try {
-          this.currentUser = JSON.parse(stored);
-        } catch (e) {
-          console.error('Failed to parse stored user', e);
-          localStorage.removeItem('currentUser');
-        }
+      const token = localStorage.getItem(this.tokenKey);
+      if (token) {
+        this.currentUser = this.decodeToken(token);
       }
     }
   }
@@ -47,10 +42,7 @@ export class AuthService {
         return this.http.post<User>(`${this.apiUrl}/users`, payload).pipe(
           map(newUser => {
             // Auto-login after register
-            this.currentUser = newUser;
-            if (typeof window !== 'undefined' && window.localStorage) {
-              localStorage.setItem('currentUser', JSON.stringify(newUser));
-            }
+            this.setSession(newUser);
             return true;
           })
         );
@@ -60,7 +52,7 @@ export class AuthService {
 
   /**
    * Login against /users in db.json.
-   * Sets currentUser in memory (no windowStorage).
+   * Sets currentUser in memory and saves JWT to localStorage.
    */
   login(email: string, password: string): Observable<boolean> {
     return this.http.get<User[]>(`${this.apiUrl}/users`).pipe(
@@ -73,10 +65,7 @@ export class AuthService {
           return false;
         }
 
-        this.currentUser = found;
-        if (typeof window !== 'undefined' && window.localStorage) {
-          localStorage.setItem('currentUser', JSON.stringify(found));
-        }
+        this.setSession(found);
         return true;
       })
     );
@@ -85,7 +74,8 @@ export class AuthService {
   logout(): void {
     this.currentUser = null;
     if (typeof window !== 'undefined' && window.localStorage) {
-      localStorage.removeItem('currentUser');
+      localStorage.removeItem(this.tokenKey);
+      localStorage.removeItem('currentUser'); // Cleanup old method if exists
     }
   }
 
@@ -97,11 +87,53 @@ export class AuthService {
     return this.currentUser != null;
   }
 
-  /** Update current user in memory */
+  getToken(): string | null {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      return localStorage.getItem(this.tokenKey);
+    }
+    return null;
+  }
+
+  /** Update current user in memory and update token */
   updateCurrentUser(user: User): void {
+    this.setSession(user);
+  }
+
+  // --- JWT Helper Methods ---
+
+  private setSession(user: User): void {
     this.currentUser = user;
     if (typeof window !== 'undefined' && window.localStorage) {
-      localStorage.setItem('currentUser', JSON.stringify(user));
+      const token = this.generateMockJwt(user);
+      localStorage.setItem(this.tokenKey, token);
+
+      // We also keep 'currentUser' for now to support legacy code that might read it directly? 
+      // Actually, let's migrate fully to token. But keeping 'currentUser' cleaned up.
+      localStorage.removeItem('currentUser');
+    }
+  }
+
+  /**
+   * Simulates generating a JWT token
+   * Format: header.payload.signature
+   */
+  private generateMockJwt(user: User): string {
+    const header = btoa(JSON.stringify({ alg: "HS256", typ: "JWT" }));
+    const payload = btoa(JSON.stringify(user));
+    const signature = "dummy_signature_secret"; // Normally this is a hash
+    return `${header}.${payload}.${signature}`;
+  }
+
+  private decodeToken(token: string): User | null {
+    try {
+      const parts = token.split('.');
+      if (parts.length !== 3) return null;
+
+      const payload = atob(parts[1]);
+      return JSON.parse(payload);
+    } catch (e) {
+      console.error('Failed to decode token', e);
+      return null;
     }
   }
 }
