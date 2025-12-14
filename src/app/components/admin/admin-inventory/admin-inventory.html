@@ -45,10 +45,10 @@
         <div class="filter-pills">
           <button class="filter-btn" [class.active]="statusFilter === 'All'"
             (click)="onFilterChange('All')">All</button>
-          <button class="filter-btn" [class.active]="statusFilter === 'Healthy'"
-            (click)="onFilterChange('Healthy')">Healthy</button>
-          <button class="filter-btn" [class.active]="statusFilter === 'Critical'"
-            (click)="onFilterChange('Critical')">Critical</button>
+          <button class="filter-btn" [class.active]="statusFilter === 'In Stock'"
+            (click)="onFilterChange('In Stock')">In Stock</button>
+          <button class="filter-btn" [class.active]="statusFilter === 'Low Stock'"
+            (click)="onFilterChange('Low Stock')">Low Stock</button>
         </div>
 
       </div>
@@ -86,8 +86,8 @@
               </td>
               <td>
                 <div class="action-buttons-inline">
-                  <button class="manage-link" (click)="openStockEditor(p)">Stock</button>
-                  <button class="manage-link" (click)="openProductEditor(p)">Details</button>
+                  <button class="manage-link" (click)="openStockEditor(p)">Stock-Update</button>
+                  <button class="manage-link" (click)="openProductEditor(p)">Edit</button>
                   <button class="manage-link delete-link" style="color: #ff4444;" (click)="deleteProduct(p)">
                     Delete
                   </button>

@@ -8,9 +8,10 @@
 
 
         <ul class="navbar-links">
-            <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+
 
             <ng-container *ngIf="!isAdmin">
+                <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
                 <li><a routerLink="/products" routerLinkActive="active">Products</a></li>
                 <li><a routerLink="/orders" routerLinkActive="active">Orders</a></li>
             </ng-container>
@@ -19,6 +20,7 @@
                 <li><a routerLink="/admin" routerLinkActive="active"
                         [routerLinkActiveOptions]="{exact: true}">Dashboard</a></li>
                 <li><a routerLink="/orders" routerLinkActive="active">Orders</a></li>
+                <li><a routerLink="/products" routerLinkActive="active">Products</a></li>
                 <li><a routerLink="/admin/inventory" routerLinkActive="active">Inventory</a></li>
             </ng-container>
         </ul>

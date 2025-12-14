@@ -225,12 +225,12 @@
   font-weight: 500;
 }
 
-.status-pill.healthy {
+.status-pill.in-stock {
   background: #ecfdf3;
   color: #16a34a;
 }
 
-.status-pill.critical {
+.status-pill.low-stock {
   background: #fef2f2;
   color: #b91c1c;
 }

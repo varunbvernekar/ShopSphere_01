@@ -125,18 +125,15 @@
             </td>
             <td>
               <div class="action-buttons-inline" style="display: flex; gap: 8px;">
-                <button type="button" class="admin-save-btn" (click)="onAdminLogisticsChange(order)"
+                <button type="button" class="admin-action-btn save" (click)="onAdminLogisticsChange(order)"
                   title="Save Logistics">
-                  <span class="material-symbols-rounded">save</span>
+                  Save
                 </button>
-                <button type="button" class="admin-details-btn" (click)="viewAdminOrderDetails(order)"
-                  style="background: #4f46e5; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer;">
+                <button type="button" class="admin-action-btn details" (click)="viewAdminOrderDetails(order)">
                   Details
                 </button>
-                <button type="button" class="admin-cancel-btn" *ngIf="isAdminOrderCancellable(order)"
-                  (click)="cancelOrder(order)"
-                  style="background: #ef4444; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer;"
-                  title="Cancel Order">
+                <button type="button" class="admin-action-btn cancel" *ngIf="isAdminOrderCancellable(order)"
+                  (click)="cancelOrder(order)" title="Cancel Order">
                   <span class="material-symbols-rounded">cancel</span>
                 </button>
               </div>

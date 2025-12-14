@@ -18,7 +18,7 @@ export class AdminInventory implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
   searchQuery = '';
-  statusFilter: 'All' | 'Healthy' | 'Critical' = 'All';
+  statusFilter: 'All' | 'In Stock' | 'Low Stock' = 'All';
 
   // Summary Metrics
   get totalProducts(): number {
@@ -73,7 +73,7 @@ export class AdminInventory implements OnInit {
     this.filterProducts();
   }
 
-  onFilterChange(status: 'All' | 'Healthy' | 'Critical'): void {
+  onFilterChange(status: 'All' | 'In Stock' | 'Low Stock'): void {
     this.statusFilter = status;
     this.filterProducts();
   }
@@ -82,9 +82,9 @@ export class AdminInventory implements OnInit {
     let temp = this.products;
 
     // 1. Filter by Status
-    if (this.statusFilter === 'Critical') {
+    if (this.statusFilter === 'Low Stock') {
       temp = temp.filter(p => this.isLowStock(p));
-    } else if (this.statusFilter === 'Healthy') {
+    } else if (this.statusFilter === 'In Stock') {
       temp = temp.filter(p => !this.isLowStock(p));
     }
 
@@ -110,16 +110,16 @@ export class AdminInventory implements OnInit {
 
   getStatusClass(product: Product): string {
     if (this.isLowStock(product)) {
-      return 'status-pill critical';
+      return 'status-pill low-stock';
     }
-    return 'status-pill healthy';
+    return 'status-pill in-stock';
   }
 
   getStatusLabel(product: Product): string {
     if (this.isLowStock(product)) {
-      return 'Critical';
+      return 'Low Stock';
     }
-    return 'Healthy';
+    return 'In Stock';
   }
 
   // --- Inventory (Stock) Management ---

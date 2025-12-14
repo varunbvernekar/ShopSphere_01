@@ -8,6 +8,14 @@ import { ProductService } from '../../../core/services/product';
 import { OrderService } from '../../../core/services/order';
 import { Order } from '../../../core/models/order';
 
+interface RepeatedProductReportItem {
+  name: string;
+  image: string;
+  timesOrdered: number;
+  totalQuantity: number;
+  totalRevenue: number;
+}
+
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
@@ -48,6 +56,7 @@ export class AdminDashboard implements OnInit {
   reportStartDate = '';
   reportEndDate = '';
   filteredOrders: Order[] = [];
+  repeatedProductsReport: RepeatedProductReportItem[] = [];
 
   constructor(
     private productService: ProductService,
@@ -82,6 +91,7 @@ export class AdminDashboard implements OnInit {
         this.totalOrders = orders.length;
         this.totalRevenue = orders.reduce((sum, o) => sum + o.amount, 0);
         this.avgOrderValue = orders.length > 0 ? this.totalRevenue / orders.length : 0;
+        this.calculateRepeatedProducts();
       },
       error: err => {
         console.error('Failed to load orders', err);
@@ -235,5 +245,40 @@ export class AdminDashboard implements OnInit {
 
   getReportOrderCount(): number {
     return this.filteredOrders.length;
+  }
+
+  private calculateRepeatedProducts(): void {
+    const productMap = new Map<string, RepeatedProductReportItem>();
+
+    this.orders.forEach(order => {
+      if (order.items) {
+        order.items.forEach(item => {
+          // Use name as key since productId might be inconsistent or missing in some legacy orders
+          // ideally use productId, but name is safer for display aggregation if distinct
+          const key = item.name;
+
+          if (!productMap.has(key)) {
+            productMap.set(key, {
+              name: item.name,
+              image: item.image,
+              timesOrdered: 0,
+              totalQuantity: 0,
+              totalRevenue: 0
+            });
+          }
+
+          const reportItem = productMap.get(key)!;
+          reportItem.timesOrdered++;
+          reportItem.totalQuantity += item.quantity;
+          reportItem.totalRevenue += (item.price * item.quantity);
+        });
+      }
+    });
+
+    // Convert map to array and sort by times ordered (desc)
+    this.repeatedProductsReport = Array.from(productMap.values())
+      .sort((a, b) => b.timesOrdered - a.timesOrdered)
+      // Only keep products ordered more than twice to be "repeated"
+      .filter(item => item.timesOrdered > 2);
   }
 }
