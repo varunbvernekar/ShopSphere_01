@@ -22,6 +22,7 @@ export class ProductService {
       map(products =>
         products.map(p => ({
           ...p,
+          productId: p.productId || (p as any).id,
           customOptions:
             p.customOptions && p.customOptions.length
               ? p.customOptions

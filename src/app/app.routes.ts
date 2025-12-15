@@ -25,5 +25,6 @@ export const routes: Routes = [
   { path: 'payment', component: Payment, canActivate: [authGuard] },
   { path: 'admin', component: AdminDashboard, canActivate: [adminGuard] },
   { path: 'admin/inventory', component: AdminInventory, canActivate: [adminGuard] },
+  { path: 'admin/customize', loadComponent: () => import('./components/admin/customize-product/customize-product').then(m => m.CustomizeProduct), canActivate: [adminGuard] },
   { path: '**', redirectTo: '' }
 ];
