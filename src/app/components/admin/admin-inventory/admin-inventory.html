@@ -2,9 +2,6 @@
 
 <div class="inventory-container">
   <h1 class="inventory-title">Inventory Management</h1>
-  <p class="inventory-subtitle">
-    Monitor stock levels, manage inventory, and bulk import products
-  </p>
 
   <div class="inventory-summary-cards">
     <div class="summary-card">
@@ -41,6 +38,8 @@
           <span class="search-icon">🔍</span>
           <input type="text" placeholder="Search products..." [(ngModel)]="searchQuery" (input)="onSearchChange()" />
         </div>
+
+
 
         <div class="filter-pills">
           <button class="filter-btn" [class.active]="statusFilter === 'All'"

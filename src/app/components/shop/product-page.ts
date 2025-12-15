@@ -31,29 +31,9 @@ export class ProductPage implements OnInit {
   view: CustomerView = 'catalog';
   selectedProduct: Product | null = null;
 
-  // Admin add-product form model
-  newProduct = {
-    name: '',
-    description: '',
-    category: '',
-    basePrice: 0,
-    previewImage: '',
-    stockLevel: 0,
-    reorderThreshold: 0
-  };
 
-  // Image upload for new products
-  selectedFileName = '';
-  imagePreview = '';
-  showSuccessMessage = false;
 
-  constructor(
-    private productService: ProductService,
-    private authService: AuthService,
-    private cartService: CartService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) { }
+  // ---- CUSTOMER flow ----
 
   ngOnInit(): void {
     this.loadProducts();
@@ -82,88 +62,6 @@ export class ProductPage implements OnInit {
     });
   }
 
-  get isAdmin(): boolean {
-    return this.role === 'ADMIN';
-  }
-
-  // ---- ADMIN flow: add product ----
-
-  onAddProduct(): void {
-    if (!this.isAdmin) {
-      return;
-    }
-
-    if (!this.newProduct.name || !this.newProduct.basePrice || !this.newProduct.category) {
-      return;
-    }
-
-    const productImage = this.imagePreview || 'assets/images/placeholder.jpg';
-
-    this.productService
-      .addProduct({
-        name: this.newProduct.name,
-        description: this.newProduct.description,
-        category: this.newProduct.category,
-        basePrice: Number(this.newProduct.basePrice),
-        previewImage: productImage,
-        stockLevel: Number(this.newProduct.stockLevel),
-        reorderThreshold: Number(this.newProduct.reorderThreshold),
-        // ✅ required by Product model
-        customOptions: [],
-        isActive: true
-      })
-      .subscribe({
-        next: () => {
-          this.showSuccessMessage = true;
-          this.resetNewProductForm();
-          this.loadProducts();
-
-          // Hide success message after 3 seconds
-          setTimeout(() => {
-            this.showSuccessMessage = false;
-          }, 3000);
-        },
-        error: err => {
-          console.error('Failed to add product', err);
-        }
-      });
-  }
-
-  private resetNewProductForm(): void {
-    this.newProduct = {
-      name: '',
-      description: '',
-      category: '',
-      basePrice: 0,
-      previewImage: '',
-      stockLevel: 0,
-      reorderThreshold: 0
-    };
-    this.selectedFileName = '';
-    this.imagePreview = '';
-
-    // Reset file input value
-    const fileInput = document.getElementById('productImage') as HTMLInputElement;
-    if (fileInput) {
-      fileInput.value = '';
-    }
-  }
-
-  // Handle image file selection for new product
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedFileName = file.name;
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.imagePreview = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  // ---- CUSTOMER flow ----
-
   get cartItems(): CartItem[] {
     return this.cartService.getItems();
   }
@@ -180,6 +78,14 @@ export class ProductPage implements OnInit {
     this.selectedProduct = null;
     this.view = 'catalog';
   }
+
+  constructor(
+    private productService: ProductService,
+    private authService: AuthService,
+    private cartService: CartService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   handleAddToCart(event: {
     product: Product;

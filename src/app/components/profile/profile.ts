@@ -66,7 +66,11 @@ export class Profile implements OnInit {
         this.isLoading = false;
       },
       error: err => {
-        console.error('Failed to load profile', err);
+        if (err.status === 0) {
+          this.errorMessage = 'Unable to connect to the server. Please ensure the backend is running.';
+          this.isLoading = false;
+          return;
+        }
         // If user doesn't exist in db, try to use current user from auth
         if (err.status === 404) {
           const currentUser = this.authService.getCurrentUser();
@@ -134,7 +138,11 @@ export class Profile implements OnInit {
       },
       error: err => {
         console.error('Failed to update profile', err);
-        this.errorMessage = 'Failed to update profile. Please try again.';
+        if (err.status === 0) {
+          this.errorMessage = 'Unable to connect to the server. Please ensure the backend is running.';
+        } else {
+          this.errorMessage = 'Failed to update profile. Please try again.';
+        }
         this.isSaving = false;
       }
     });

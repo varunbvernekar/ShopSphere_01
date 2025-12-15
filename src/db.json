@@ -13,13 +13,6 @@
       "email": "customer@example.com",
       "password": "customer123",
       "role": "CUSTOMER",
-      "address": {
-        "street": "",
-        "city": "",
-        "state": "",
-        "zipCode": "",
-        "country": ""
-      },
       "gender": "Male",
       "preferredLanguage": "English"
     },
@@ -37,17 +30,7 @@
       "email": "slay@gmail.com",
       "phoneNumber": "1234567890",
       "password": "asdfghjkl",
-      "role": "CUSTOMER",
-      "address": {
-        "street": "",
-        "city": "",
-        "state": "",
-        "zipCode": "",
-        "country": ""
-      },
-      "dateOfBirth": "",
-      "gender": "",
-      "preferredLanguage": ""
+      "role": "CUSTOMER"
     },
     {
       "id": "5",
@@ -55,17 +38,7 @@
       "email": "papa@gmai.com",
       "phoneNumber": "1234567890",
       "password": "1234567890",
-      "role": "CUSTOMER",
-      "address": {
-        "street": "",
-        "city": "",
-        "state": "",
-        "zipCode": "",
-        "country": ""
-      },
-      "dateOfBirth": "",
-      "gender": "",
-      "preferredLanguage": ""
+      "role": "CUSTOMER"
     },
     {
       "id": "6",
@@ -74,16 +47,9 @@
       "phoneNumber": "+918951732527",
       "password": "varun@123",
       "role": "CUSTOMER",
-      "address": {
-        "street": "",
-        "city": "",
-        "state": "",
-        "zipCode": "",
-        "country": ""
-      },
       "dateOfBirth": "2025-12-11",
       "gender": "Male",
-      "preferredLanguage": "German"
+      "preferredLanguage": "English"
     },
     {
       "id": "7",
@@ -91,6 +57,14 @@
       "email": "aaa@gmail.com",
       "phoneNumber": "+918951732222",
       "password": "aaa123",
+      "role": "CUSTOMER"
+    },
+    {
+      "id": 8,
+      "name": "aaaa",
+      "email": "aaaa@gmail.com",
+      "phoneNumber": "3951732533",
+      "password": "aaaa123",
       "role": "CUSTOMER",
       "address": {
         "street": "",
@@ -100,21 +74,38 @@
         "country": ""
       },
       "dateOfBirth": "",
-      "gender": "",
-      "preferredLanguage": ""
+      "gender": "Female",
+      "preferredLanguage": "English"
+    },
+    {
+      "name": "bbb",
+      "email": "bbb@gmail.com",
+      "phoneNumber": "3951732527",
+      "password": "bbb123",
+      "role": "CUSTOMER",
+      "address": {
+        "street": "",
+        "city": "",
+        "state": "",
+        "zipCode": "",
+        "country": ""
+      },
+      "dateOfBirth": "2025-12-12",
+      "gender": "Other",
+      "preferredLanguage": "English",
+      "id": 9
     }
   ],
   "products": [
     {
       "id": "P001",
-      "productId": "P001",
       "name": "Handcrafted Silver Ring,",
       "description": "Elegant silver ring with handcrafted detailing.",
       "category": "Jewelry",
       "basePrice": 1200,
       "previewImage": "/assets/images/ring.jpg",
-      "stockLevel": 30,
-      "reorderThreshold": 15,
+      "stockLevel": 29,
+      "reorderThreshold": 10,
       "isActive": true,
       "customOptions": [
         {
@@ -146,17 +137,17 @@
             "Gold": 30
           }
         }
-      ]
+      ],
+      "productId": "P001"
     },
     {
       "id": "P003",
-      "productId": "P003",
       "name": "Custom Leather Wallet",
       "description": "Premium leather wallet with customizable engraving.",
       "category": "Accessories",
       "basePrice": 60,
       "previewImage": "/assets/images/wallet.jpg",
-      "stockLevel": 2,
+      "stockLevel": 0,
       "reorderThreshold": 10,
       "isActive": true,
       "customOptions": [
@@ -195,7 +186,8 @@
             "Standard": 0
           }
         }
-      ]
+      ],
+      "productId": "P003"
     },
     {
       "id": "P004",
@@ -249,15 +241,66 @@
     },
     {
       "id": "P006",
-      "productId": "P006",
       "name": "Wooden Serving Tray",
       "description": "Minimal wooden tray, perfect for serving or decor.",
       "category": "Kitchen",
       "basePrice": 45,
       "previewImage": "/assets/images/wooden_tray.jpg",
-      "stockLevel": 16,
+      "stockLevel": 15,
       "reorderThreshold": 6,
       "isActive": false,
+      "customOptions": [
+        {
+          "type": "colour",
+          "values": [
+            "Silver",
+            "Gold",
+            "Rose Gold"
+          ],
+          "priceAdjustment": {
+            "Silver": 0,
+            "Gold": 15,
+            "Rose Gold": 10
+          }
+        },
+        {
+          "type": "size",
+          "values": [
+            "Small",
+            "Medium",
+            "Large"
+          ],
+          "priceAdjustment": {
+            "Small": -5,
+            "Medium": 0,
+            "Large": 10
+          }
+        },
+        {
+          "type": "material",
+          "values": [
+            "Standard",
+            "Premium"
+          ],
+          "priceAdjustment": {
+            "Standard": 0,
+            "Premium": 25
+          }
+        }
+      ],
+      "productId": "P006"
+    },
+    {
+      "id": "P009",
+      "name": "Boho Macrame Wall Hanging",
+      "description": "Intricate handmade cotton macrame wall art.",
+      "category": "Home Decor",
+      "basePrice": 45,
+      "previewImage": "/assets/images/macrame.png",
+      "stockLevel": 8,
+      "reorderThreshold": 5,
+      "isActive": true,
+      "productId": "P009",
       "customOptions": [
         {
           "type": "colour",
@@ -299,20 +342,7 @@
       ]
     },
     {
-      "id": "P009",
-      "productId": "P009",
-      "name": "Boho Macrame Wall Hanging",
-      "description": "Intricate handmade cotton macrame wall art.",
-      "category": "Home Decor",
-      "basePrice": 45,
-      "previewImage": "/assets/images/macrame.png",
-      "stockLevel": 20,
-      "reorderThreshold": 5,
-      "isActive": true
-    },
-    {
       "id": "P010",
-      "productId": "P010",
       "name": "Mid-Century Bamboo Plant Stand",
       "description": "Minimalist bamboo stand for indoor plants.",
       "category": "Home Decor",
@@ -363,7 +393,6 @@
     },
     {
       "id": "P011",
-      "productId": "P011",
       "name": "Artisan Ceramic Bowl Set",
       "description": "Set of 3 hand-thrown pottery bowls.",
       "category": "Home Decor",
@@ -414,7 +443,6 @@
     },
     {
       "id": "P012",
-      "productId": "P012",
       "name": "Handwoven Cotton Throw",
       "description": "Soft, textured throw blanket for cozy evenings.",
       "category": "Home Decor",
@@ -426,7 +454,6 @@
     },
     {
       "id": "P013",
-      "productId": "P013",
       "name": "Rustic Clay Vase",
       "description": "Tall rustic clay vase for dried flowers.",
       "category": "Home Decor",
@@ -438,7 +465,6 @@
     },
     {
       "id": "P014",
-      "productId": "P014",
       "name": "Patterned Table Runner",
       "description": "Elegant handwoven table runner with geometric patterns.",
       "category": "Home Decor",
@@ -496,7 +522,6 @@
           }
         }
       ],
-      "productId": "P016",
       "isActive": true
     },
     {
@@ -547,7 +572,6 @@
           }
         }
       ],
-      "productId": "P012",
       "isActive": true
     },
     {
@@ -598,8 +622,267 @@
           }
         }
       ],
+      "isActive": true
+    },
+    {
+      "id": "P050",
+      "name": "Handcrafted Silver Ring, (Copy P050)",
+      "description": "Elegant silver ring with handcrafted detailing.",
+      "category": "Jewelry",
+      "basePrice": 1200,
+      "previewImage": "/assets/images/ring.jpg",
+      "stockLevel": 30,
+      "reorderThreshold": 10,
       "isActive": true,
-      "productId": "P013"
+      "customOptions": [
+        {
+          "type": "colour",
+          "values": [
+            "red"
+          ],
+          "priceAdjustment": {
+            "red": 10
+          }
+        },
+        {
+          "type": "size",
+          "values": [
+            "Small",
+            "Medium",
+            "Large"
+          ],
+          "priceAdjustment": {
+            "Small": -5,
+            "Medium": 0,
+            "Large": 10
+          }
+        },
+        {
+          "type": "material",
+          "values": [
+            "Copper",
+            "Gold"
+          ],
+          "priceAdjustment": {
+            "Copper": 20,
+            "Gold": 30
+          }
+        }
+      ],
+      "productId": "P050"
+    },
+    {
+      "id": "P051",
+      "name": "Handcrafted Silver Ring, (Copy P051)",
+      "description": "Elegant silver ring with handcrafted detailing.",
+      "category": "Jewelry",
+      "basePrice": 1200,
+      "previewImage": "/assets/images/ring.jpg",
+      "stockLevel": 30,
+      "reorderThreshold": 10,
+      "isActive": true,
+      "customOptions": [
+        {
+          "type": "colour",
+          "values": [],
+          "priceAdjustment": {}
+        },
+        {
+          "type": "size",
+          "values": [
+            "Small",
+            "Medium",
+            "Large"
+          ],
+          "priceAdjustment": {
+            "Small": -5,
+            "Medium": 0,
+            "Large": 10
+          }
+        },
+        {
+          "type": "material",
+          "values": [
+            "Copper",
+            "Gold"
+          ],
+          "priceAdjustment": {
+            "Copper": 20,
+            "Gold": 30
+          }
+        }
+      ],
+      "productId": "P051"
+    },
+    {
+      "id": "P052",
+      "name": "Handcrafted Silver Ring, (Copy P052)",
+      "description": "Elegant silver ring with handcrafted detailing.",
+      "category": "Jewelry",
+      "basePrice": 1200,
+      "previewImage": "/assets/images/ring.jpg",
+      "stockLevel": 30,
+      "reorderThreshold": 10,
+      "isActive": true,
+      "customOptions": [
+        {
+          "type": "colour",
+          "values": [],
+          "priceAdjustment": {}
+        },
+        {
+          "type": "size",
+          "values": [
+            "Small",
+            "Medium",
+            "Large"
+          ],
+          "priceAdjustment": {
+            "Small": -5,
+            "Medium": 0,
+            "Large": 10
+          }
+        },
+        {
+          "type": "material",
+          "values": [
+            "Copper",
+            "Gold"
+          ],
+          "priceAdjustment": {
+            "Copper": 20,
+            "Gold": 30
+          }
+        }
+      ],
+      "productId": "P052"
+    },
+    {
+      "id": "P053",
+      "name": "Handcrafted Silver Ring, (Copy P053)",
+      "description": "Elegant silver ring with handcrafted detailing.",
+      "category": "Jewelry",
+      "basePrice": 1200,
+      "previewImage": "/assets/images/ring.jpg",
+      "stockLevel": 30,
+      "reorderThreshold": 10,
+      "isActive": true,
+      "customOptions": [
+        {
+          "type": "colour",
+          "values": [],
+          "priceAdjustment": {}
+        },
+        {
+          "type": "size",
+          "values": [
+            "Small",
+            "Medium",
+            "Large"
+          ],
+          "priceAdjustment": {
+            "Small": -5,
+            "Medium": 0,
+            "Large": 10
+          }
+        },
+        {
+          "type": "material",
+          "values": [
+            "Copper",
+            "Gold"
+          ],
+          "priceAdjustment": {
+            "Copper": 20,
+            "Gold": 30
+          }
+        }
+      ],
+      "productId": "P053"
+    },
+    {
+      "id": "P054",
+      "name": "Handcrafted Silver Ring, (Copy P054)",
+      "description": "Elegant silver ring with handcrafted detailing.",
+      "category": "Jewelry",
+      "basePrice": 1200,
+      "previewImage": "/assets/images/ring.jpg",
+      "stockLevel": 30,
+      "reorderThreshold": 10,
+      "isActive": true,
+      "customOptions": [
+        {
+          "type": "colour",
+          "values": [],
+          "priceAdjustment": {}
+        },
+        {
+          "type": "size",
+          "values": [
+            "Small",
+            "Medium",
+            "Large"
+          ],
+          "priceAdjustment": {
+            "Small": -5,
+            "Medium": 0,
+            "Large": 10
+          }
+        },
+        {
+          "type": "material",
+          "values": [
+            "Copper",
+            "Gold"
+          ],
+          "priceAdjustment": {
+            "Copper": 20,
+            "Gold": 30
+          }
+        }
+      ],
+      "productId": "P054"
+    },
+    {
+      "name": "ring",
+      "description": "ring",
+      "category": "Jewelry",
+      "basePrice": 666,
+      "previewImage": "data:image/jpeg;base64,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",
+      "stockLevel": 10,
+      "reorderThreshold": 4,
+      "customOptions": [
+        {
+          "type": "colour",
+          "values": [
+            "Silver"
+          ],
+          "priceAdjustment": {
+            "Silver": 0
+          }
+        },
+        {
+          "type": "size",
+          "values": [
+            "Large"
+          ],
+          "priceAdjustment": {
+            "Large": 10
+          }
+        },
+        {
+          "type": "material",
+          "values": [
+            "Premium"
+          ],
+          "priceAdjustment": {
+            "Premium": 25
+          }
+        }
+      ],
+      "isActive": true,
+      "productId": "P019",
+      "id": "P019"
     }
   ],
   "orders": [
@@ -768,7 +1051,7 @@
       "userId": "6",
       "placedOn": "9/12/2025",
       "amount": 59,
-      "status": "Confirmed",
+      "status": "Cancelled",
       "items": [
         {
           "productId": "P006",
@@ -890,6 +1173,186 @@
         "zipCode": "577102",
         "country": "India"
       }
+    },
+    {
+      "id": "3fd0",
+      "userId": "6",
+      "placedOn": "15/12/2025",
+      "amount": 92,
+      "status": "Shipped",
+      "items": [
+        {
+          "productId": "P003",
+          "name": "Custom Leather Wallet",
+          "image": "/assets/images/wallet.jpg",
+          "quantity": 1,
+          "color": "Gold",
+          "size": "Small",
+          "material": "Standard",
+          "price": 70
+        }
+      ],
+      "estimatedDelivery": "22/12/2025",
+      "logistics": {
+        "carrier": "Not assigned",
+        "trackingId": "-",
+        "currentLocation": "Order confirmed"
+      },
+      "deliveryAddress": {
+        "street": "LIG 6 2nd phase housing board",
+        "city": "Chikmagalur",
+        "state": "Karnataka",
+        "zipCode": "577102",
+        "country": "India"
+      }
+    },
+    {
+      "userId": 8,
+      "placedOn": "15/12/2025",
+      "amount": 1456,
+      "status": "Delivered",
+      "items": [
+        {
+          "productId": "P006",
+          "name": "Wooden Serving Tray",
+          "image": "/assets/images/wooden_tray.jpg",
+          "quantity": 1,
+          "color": "Silver",
+          "size": "Small",
+          "material": "Standard",
+          "price": 40
+        },
+        {
+          "productId": "P001",
+          "name": "Handcrafted Silver Ring,",
+          "image": "/assets/images/ring.jpg",
+          "quantity": 1,
+          "color": "",
+          "size": "Small",
+          "material": "Copper",
+          "price": 1215
+        },
+        {
+          "productId": "P003",
+          "name": "Custom Leather Wallet",
+          "image": "/assets/images/wallet.jpg",
+          "quantity": 1,
+          "color": "Silver",
+          "size": "Small",
+          "material": "Standard",
+          "price": 55
+        }
+      ],
+      "estimatedDelivery": "22/12/2025",
+      "logistics": {
+        "carrier": "Not assigned",
+        "trackingId": "-",
+        "currentLocation": "Order confirmed"
+      },
+      "deliveryAddress": {
+        "street": "LIG 6 2nd phase housing board",
+        "city": "Chikmagalur",
+        "state": "Karnataka",
+        "zipCode": "577102",
+        "country": "India"
+      },
+      "id": "WIijtx4"
+    },
+    {
+      "userId": 9,
+      "placedOn": "15/12/2025",
+      "amount": 103,
+      "status": "Delivered",
+      "items": [
+        {
+          "productId": "P009",
+          "name": "Boho Macrame Wall Hanging",
+          "image": "/assets/images/macrame.png",
+          "quantity": 2,
+          "color": "Silver",
+          "size": "Small",
+          "material": "Standard",
+          "price": 40
+        }
+      ],
+      "estimatedDelivery": "22/12/2025",
+      "logistics": {
+        "carrier": "Not assigned",
+        "trackingId": "-",
+        "currentLocation": "Order confirmed"
+      },
+      "deliveryAddress": {
+        "street": "LIGWWWWW 6 2nd phase housing board",
+        "city": "Chikmagalur",
+        "state": "Karnataka",
+        "zipCode": "577102",
+        "country": "India"
+      },
+      "id": "fb_N30r"
+    },
+    {
+      "userId": 9,
+      "placedOn": "15/12/2025",
+      "amount": 59,
+      "status": "Delivered",
+      "items": [
+        {
+          "productId": "P009",
+          "name": "Boho Macrame Wall Hanging",
+          "image": "/assets/images/macrame.png",
+          "quantity": 1,
+          "color": "Silver",
+          "size": "Small",
+          "material": "Standard",
+          "price": 40
+        }
+      ],
+      "estimatedDelivery": "22/12/2025",
+      "logistics": {
+        "carrier": "Not assigned",
+        "trackingId": "-",
+        "currentLocation": "Order confirmed"
+      },
+      "deliveryAddress": {
+        "street": "LIG 6 2nd phase housing board",
+        "city": "Chikmagalur",
+        "state": "Karnataka",
+        "zipCode": "577102",
+        "country": "India"
+      },
+      "id": "R6KHY0R"
+    },
+    {
+      "userId": "6",
+      "placedOn": "15/12/2025",
+      "amount": 59,
+      "status": "Confirmed",
+      "items": [
+        {
+          "productId": "P009",
+          "name": "Boho Macrame Wall Hanging",
+          "image": "/assets/images/macrame.png",
+          "quantity": 1,
+          "color": "Silver",
+          "size": "Small",
+          "material": "Standard",
+          "price": 40
+        }
+      ],
+      "estimatedDelivery": "22/12/2025",
+      "logistics": {
+        "carrier": "Not assigned",
+        "trackingId": "-",
+        "currentLocation": "Order confirmed"
+      },
+      "deliveryAddress": {
+        "street": "LIG 6 2nd phase housing board",
+        "city": "Chikmagalur",
+        "state": "Karnataka",
+        "zipCode": "577102",
+        "country": "India"
+      },
+      "id": "phfEI2i"
     }
   ]
 }

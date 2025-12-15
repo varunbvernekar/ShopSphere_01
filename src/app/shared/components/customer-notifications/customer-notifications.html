@@ -26,9 +26,7 @@
         <div class="notification-item" *ngFor="let notification of notifications"
           [style.border-left-color]="getStatusColor(notification.status)" [class.notification-read]="notification.read"
           (click)="markAsRead(notification)">
-          <div class="notification-icon-wrapper">
-            <span class="status-icon">{{ getStatusIcon(notification.status) }}</span>
-          </div>
+
           <div class="notification-info">
             <div class="notification-header">
               <div class="notification-order-info">

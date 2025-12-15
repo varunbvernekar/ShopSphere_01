@@ -35,7 +35,7 @@ export class AdminDashboard implements OnInit {
 
 
   // Reports
-  showReports = false;
+  showReports = true;
   reportStartDate = '';
   reportEndDate = '';
   filteredOrders: Order[] = [];
@@ -86,12 +86,7 @@ export class AdminDashboard implements OnInit {
 
 
   // Reports
-  toggleReports(): void {
-    this.showReports = !this.showReports;
-    if (this.showReports) {
-      this.filteredOrders = this.orders;
-    }
-  }
+
 
   filterReports(): void {
     if (!this.reportStartDate || !this.reportEndDate) {

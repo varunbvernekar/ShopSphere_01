@@ -1,19 +1,6 @@
 <!-- src/app/components/admin/admin-dashboard/admin-dashboard.html -->
 
 <div class="dashboard-container">
-  <!-- Hero Banner -->
-  <div class="admin-hero">
-    <div class="admin-hero-content">
-      <h1>Admin</h1>
-
-    </div>
-    <div class="header-actions">
-      <button class="action-btn" (click)="toggleReports()">
-        <span class="material-symbols-rounded">analytics</span>
-        {{ showReports ? 'Hide' : 'View' }} Reports
-      </button>
-    </div>
-  </div>
 
   <!-- Top metric cards -->
   <div class="stats-grid">
@@ -23,9 +10,7 @@
         <h3>Total Orders</h3>
         <p class="stat-value">{{ totalOrders }}</p>
       </div>
-      <div class="stat-trend positive">
-        <span class="material-symbols-rounded">trending_up</span> +12%
-      </div>
+
     </div>
     <div class="stat-card green">
       <div class="stat-icon"><span class="material-symbols-rounded">payments</span></div>
@@ -33,9 +18,7 @@
         <h3>Revenue</h3>
         <p class="stat-value">₹{{ totalRevenue }}</p>
       </div>
-      <div class="stat-trend positive">
-        <span class="material-symbols-rounded">trending_up</span> +8%
-      </div>
+
     </div>
     <div class="stat-card purple">
       <div class="stat-icon"><span class="material-symbols-rounded">show_chart</span></div>
@@ -43,9 +26,7 @@
         <h3>Avg Order Value</h3>
         <p class="stat-value">₹{{ avgOrderValue | number:'1.0-0' }}</p>
       </div>
-      <div class="stat-trend neutral">
-        <span class="material-symbols-rounded">remove</span> 0%
-      </div>
+
     </div>
     <div class="stat-card orange">
       <div class="stat-icon"><span class="material-symbols-rounded">inventory_2</span></div>
@@ -53,16 +34,14 @@
         <h3>Active Products</h3>
         <p class="stat-value">{{ activeProductsCount }}</p>
       </div>
-      <div class="stat-trend positive">
-        <span class="material-symbols-rounded">trending_up</span> +5%
-      </div>
+
     </div>
   </div>
 
 
 
   <!-- Reports Section -->
-  <div class="reports-card" *ngIf="showReports">
+  <div class="reports-card">
     <h2 class="section-title">Reports & Analytics</h2>
     <div class="reports-filters">
       <div class="form-row">

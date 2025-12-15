@@ -7,10 +7,12 @@ import { InventoryService } from '../../../core/services/inventory';
 import { ProductService } from '../../../core/services/product';
 import { Product } from '../../../core/models/product';
 
+import { RouterLink } from '@angular/router';
+
 @Component({
   selector: 'app-admin-inventory',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './admin-inventory.html',
   styleUrls: ['./admin-inventory.css']
 })
