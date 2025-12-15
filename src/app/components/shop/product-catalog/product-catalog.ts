@@ -17,6 +17,10 @@ export class ProductCatalog {
   searchTerm = '';
   selectedCategory = 'All';
 
+  // Segmentation state
+  currentPage = 1;
+  itemsPerPage = 12;
+
   get categories(): string[] {
     const set = new Set<string>();
     this.products.forEach(p => {
@@ -45,6 +49,7 @@ export class ProductCatalog {
 
       return matchCategory && matchSearch;
     });
+
     return filtered.sort((a, b) => {
       const aInStock = this.isInStock(a);
       const bInStock = this.isInStock(b);
@@ -54,6 +59,41 @@ export class ProductCatalog {
       return 0; // Keep original order for same stock status
     });
   }
+
+  get paginatedProducts(): Product[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return this.filteredProducts.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredProducts.length / this.itemsPerPage);
+  }
+
+  onFilterChange(): void {
+    this.currentPage = 1;
+  }
+
+  setPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
   isInStock(product: Product): boolean {
     // Product is in stock if stockLevel is undefined, null, or greater than 0
     // Product is out of stock if stockLevel is 0

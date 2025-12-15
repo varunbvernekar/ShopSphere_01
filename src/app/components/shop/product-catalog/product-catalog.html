@@ -3,11 +3,12 @@
   <div class="catalog-filters">
     <div class="catalog-search-wrapper">
       <span class="catalog-search-icon"><span class="material-symbols-rounded">search</span></span>
-      <input type="text" placeholder="Search products..." [(ngModel)]="searchTerm" class="catalog-search-input" />
+      <input type="text" placeholder="Search products..." [(ngModel)]="searchTerm" (ngModelChange)="onFilterChange()"
+        class="catalog-search-input" />
     </div>
 
     <div class="catalog-category-wrapper">
-      <select [(ngModel)]="selectedCategory" class="catalog-category-select">
+      <select [(ngModel)]="selectedCategory" (ngModelChange)="onFilterChange()" class="catalog-category-select">
         <option *ngFor="let category of categories">{{ category }}</option>
       </select>
       <span class="catalog-category-arrow"><span class="material-symbols-rounded">expand_more</span></span>
@@ -16,7 +17,7 @@
 
   <!-- Product cards -->
   <div class="catalog-grid">
-    <button *ngFor="let product of filteredProducts" type="button" (click)="select(product)" class="catalog-card"
+    <button *ngFor="let product of paginatedProducts" type="button" (click)="select(product)" class="catalog-card"
       [class.out-of-stock]="isOutOfStock(product)">
       <div class="catalog-card-image-wrapper">
         <img [src]="product.previewImage" [alt]="product.name" (error)="onImageError($event)" class="catalog-card-image"
@@ -49,7 +50,24 @@
     </button>
   </div>
 
-  <div *ngIf="filteredProducts.length === 0" class="catalog-empty">
+  <!-- Pagination Controls -->
+  <div class="catalog-pagination" *ngIf="totalPages > 1">
+    <button (click)="prevPage()" [disabled]="currentPage === 1" class="pagination-btn">
+      <span class="material-symbols-rounded">chevron_left</span>
+      Previous
+    </button>
+
+    <span class="pagination-info">
+      Page {{ currentPage }} of {{ totalPages }}
+    </span>
+
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="pagination-btn">
+      Next
+      <span class="material-symbols-rounded">chevron_right</span>
+    </button>
+  </div>
+
+  <div *ngIf="paginatedProducts.length === 0" class="catalog-empty">
     No products found matching your criteria.
   </div>
 </div>
