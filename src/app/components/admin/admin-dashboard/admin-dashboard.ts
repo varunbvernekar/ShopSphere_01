@@ -33,17 +33,6 @@ export class AdminDashboard implements OnInit {
   totalRevenue = 54230;
   avgOrderValue = 425;
 
-  newProduct = {
-    name: '',
-    description: '',
-    category: '',
-    basePrice: 0,
-    previewImage: '',
-    stockLevel: 0,
-    reorderThreshold: 0
-  };
-
-
 
   // Reports
   showReports = false;
@@ -91,47 +80,6 @@ export class AdminDashboard implements OnInit {
         console.error('Failed to load orders', err);
       }
     });
-  }
-
-  onAddProduct(): void {
-    if (!this.newProduct.name || !this.newProduct.basePrice) {
-      return;
-    }
-
-    this.productService
-      .addProduct({
-        name: this.newProduct.name,
-        description: this.newProduct.description,
-        category: this.newProduct.category,
-        basePrice: Number(this.newProduct.basePrice),
-        previewImage:
-          this.newProduct.previewImage || 'assets/images/placeholder.jpg',
-        customOptions: [],
-        stockLevel: Number(this.newProduct.stockLevel),
-        reorderThreshold: Number(this.newProduct.reorderThreshold),
-        isActive: true
-      })
-      .subscribe({
-        next: () => {
-          this.resetForm();
-          this.refreshData();
-        },
-        error: err => {
-          console.error('Failed to add product', err);
-        }
-      });
-  }
-
-  resetForm(): void {
-    this.newProduct = {
-      name: '',
-      description: '',
-      category: '',
-      basePrice: 0,
-      previewImage: '',
-      stockLevel: 0,
-      reorderThreshold: 0
-    };
   }
 
 

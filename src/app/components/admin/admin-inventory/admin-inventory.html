@@ -86,11 +86,9 @@
               </td>
               <td>
                 <div class="action-buttons-inline">
-                  <button class="manage-link" (click)="openStockEditor(p)">Stock-Update</button>
-                  <button class="manage-link" (click)="openProductEditor(p)">Edit</button>
-                  <button class="manage-link delete-link" style="color: #ff4444;" (click)="deleteProduct(p)">
-                    Delete
-                  </button>
+                  <button class="table-btn btn-update" (click)="openStockEditor(p)">Update</button>
+                  <button class="table-btn btn-edit" (click)="openProductEditor(p)">Edit</button>
+                  <button class="table-btn btn-delete" (click)="deleteProduct(p)">Delete</button>
                 </div>
               </td>
             </tr>

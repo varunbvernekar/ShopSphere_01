@@ -235,17 +235,56 @@
   color: #b91c1c;
 }
 
-.manage-link {
-  background: none;
+.table-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
   border: none;
-  color: #4f46e5;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  font-size: 13px;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.manage-link:hover {
-  text-decoration: underline;
+.table-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.table-btn:active {
+  transform: translateY(0);
+}
+
+.btn-update {
+  background: #f0f9ff;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.btn-update:hover {
+  background: #e0f2fe;
+}
+
+.btn-edit {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #e5e7eb;
+}
+
+.btn-edit:hover {
+  background: #e5e7eb;
+}
+
+.btn-delete {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.btn-delete:hover {
+  background: #fee2e2;
 }
 
 .form-row {

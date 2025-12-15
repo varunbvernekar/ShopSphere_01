@@ -43,8 +43,9 @@ export class ProductPage implements OnInit {
   };
 
   // Image upload for new products
-  selectedImageFile: File | null = null;
-  imagePreview: string | null = null;
+  selectedFileName = '';
+  imagePreview = '';
+  showSuccessMessage = false;
 
   constructor(
     private productService: ProductService,
@@ -92,26 +93,35 @@ export class ProductPage implements OnInit {
       return;
     }
 
-    if (!this.newProduct.name || !this.newProduct.basePrice) {
+    if (!this.newProduct.name || !this.newProduct.basePrice || !this.newProduct.category) {
       return;
     }
+
+    const productImage = this.imagePreview || 'assets/images/placeholder.jpg';
 
     this.productService
       .addProduct({
         name: this.newProduct.name,
         description: this.newProduct.description,
         category: this.newProduct.category,
-        basePrice: this.newProduct.basePrice,
-        previewImage: this.newProduct.previewImage,
-        stockLevel: this.newProduct.stockLevel,
-        reorderThreshold: this.newProduct.reorderThreshold,
+        basePrice: Number(this.newProduct.basePrice),
+        previewImage: productImage,
+        stockLevel: Number(this.newProduct.stockLevel),
+        reorderThreshold: Number(this.newProduct.reorderThreshold),
         // ✅ required by Product model
-        customOptions: []
+        customOptions: [],
+        isActive: true
       })
       .subscribe({
         next: () => {
+          this.showSuccessMessage = true;
           this.resetNewProductForm();
           this.loadProducts();
+
+          // Hide success message after 3 seconds
+          setTimeout(() => {
+            this.showSuccessMessage = false;
+          }, 3000);
         },
         error: err => {
           console.error('Failed to add product', err);
@@ -129,46 +139,27 @@ export class ProductPage implements OnInit {
       stockLevel: 0,
       reorderThreshold: 0
     };
-    this.selectedImageFile = null;
-    this.imagePreview = null;
-  }
+    this.selectedFileName = '';
+    this.imagePreview = '';
 
-  // Handle image file selection for new product
-  onImageFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        alert('Please select an image file');
-        return;
-      }
-
-      // Validate file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        alert('Image size should be less than 5MB');
-        return;
-      }
-
-      this.selectedImageFile = file;
-
-      // Create preview
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        this.imagePreview = e.target?.result as string;
-        // Set preview image URL to data URL
-        this.newProduct.previewImage = this.imagePreview;
-      };
-      reader.readAsDataURL(file);
+    // Reset file input value
+    const fileInput = document.getElementById('productImage') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
     }
   }
 
-  // Clear selected image
-  clearSelectedImage(): void {
-    this.selectedImageFile = null;
-    this.imagePreview = null;
-    this.newProduct.previewImage = '';
+  // Handle image file selection for new product
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFileName = file.name;
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imagePreview = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
   // ---- CUSTOMER flow ----
