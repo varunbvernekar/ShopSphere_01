@@ -1,4 +1,3 @@
-// src/app/components/customer/payment/payment.ts
 
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -8,6 +7,8 @@ import { CartService } from '../../services/cart';
 import { AuthService } from '../../services/auth';
 import { OrderService } from '../../services/order';
 import { ProductService } from '../../services/product';
+import { InventoryService } from '../../services/inventory';
+import { NotificationService } from '../../services/notification';
 import { Order, OrderStatus, Address } from '../../models/order';
 import { CartItem } from '../../models/cart-item';
 
@@ -63,6 +64,8 @@ export class Payment implements OnInit {
     private authService: AuthService,
     private orderService: OrderService,
     private productService: ProductService,
+    private inventoryService: InventoryService,
+    private notificationService: NotificationService,
     private router: Router
   ) { }
 
@@ -167,11 +170,8 @@ export class Payment implements OnInit {
         // Update inventory after order confirmation
         this.updateInventoryForOrder(orderItems);
 
-        // Trigger low stock count refresh (only in browser)
-        if (typeof window !== 'undefined') {
-          window.dispatchEvent(new CustomEvent('inventoryUpdated'));
-          window.dispatchEvent(new CustomEvent('orderUpdated'));
-        }
+        // Refresh notifications
+        this.notificationService.refresh();
 
         this.cartService.clear();
         this.router.navigate(['/orders']);
@@ -186,11 +186,12 @@ export class Payment implements OnInit {
 
   private updateInventoryForOrder(items: Array<{ productId: string; quantity: number }>): void {
     items.forEach(item => {
+      // Use InventoryService directly which will handle refresh
       this.productService.getProductById(item.productId).subscribe({
         next: product => {
           if (product && typeof product.stockLevel === 'number') {
             const newStock = Math.max(0, product.stockLevel - item.quantity);
-            this.productService.updateStock(item.productId, newStock).subscribe({
+            this.inventoryService.updateStock(item.productId, newStock).subscribe({
               next: () => console.log(`Inventory updated for ${product.name}`),
               error: err => console.error(`Failed to update inventory for ${product.name}`, err)
             });
@@ -205,4 +206,3 @@ export class Payment implements OnInit {
     this.router.navigate(['/products']);
   }
 }
-

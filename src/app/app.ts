@@ -12,7 +12,7 @@ import { CustomerNotifications } from './shared/components/customer-notification
 import { Navbar } from './shared/components/navbar/navbar';
 import { Footer } from './shared/components/footer/footer';
 import { OrderService } from './services/order';
-
+import { InventoryService } from './services/inventory';
 import { NotificationService } from './services/notification';
 
 @Component({
@@ -36,11 +36,15 @@ export class App implements OnInit, OnDestroy {
     public cartService: CartService,
     private productService: ProductService,
     private orderService: OrderService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private inventoryService: InventoryService
   ) { }
 
   ngOnInit(): void {
-    this.loadLowStockCount();
+    // Subscribe to low stock count from Inventory Service
+    this.productsSubscription = this.inventoryService.lowStockCount$.subscribe(
+      count => this.lowStockCount = count
+    );
 
     // Subscribe to notification service
     this.notifSubscription = this.notificationService.unreadCount$.subscribe(
@@ -52,20 +56,6 @@ export class App implements OnInit, OnDestroy {
     if (user && user.id) {
       this.notificationService.loadForUser(user.id);
     }
-
-    // Only add event listeners in browser environment
-    // Listen for inventory updates to refresh low stock count
-    window.addEventListener('inventoryUpdated', () => {
-      this.loadLowStockCount();
-    });
-
-    // Order updates might now be handled by global polling or service logic
-    // But keeping listener if needed, though NotificationService should auto-update if it polls
-    // For now, let's ensure we reload if an event fires
-    window.addEventListener('orderUpdated', () => {
-      const u = this.authService.getCurrentUser();
-      if (u?.id) this.notificationService.loadForUser(u.id); // Triggers reload
-    });
   }
 
   ngOnDestroy(): void {
@@ -75,30 +65,6 @@ export class App implements OnInit, OnDestroy {
     if (this.notifSubscription) {
       this.notifSubscription.unsubscribe();
     }
-  }
-
-  loadLowStockCount(): void {
-    if (this.productsSubscription) {
-      this.productsSubscription.unsubscribe();
-    }
-    this.productsSubscription = this.productService.getProducts().subscribe({
-      next: products => {
-        this.lowStockCount = products.filter(
-          p =>
-            typeof p.stockLevel === 'number' &&
-            typeof p.reorderThreshold === 'number' &&
-            p.stockLevel <= p.reorderThreshold
-        ).length;
-      },
-      error: err => {
-        console.error('Failed to load low stock count', err);
-      }
-    });
-  }
-
-  // Method to refresh low stock count (can be called from other components)
-  refreshLowStockCount(): void {
-    this.loadLowStockCount();
   }
 
   get isLoggedIn(): boolean {

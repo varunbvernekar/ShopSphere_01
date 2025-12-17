@@ -17,12 +17,6 @@
           </app-product-customizer>
         </ng-container>
 
-        <ng-container *ngSwitchCase="'cart'">
-          <app-cart [items]="cartItems" (updateQuantity)="handleUpdateQuantity($event)"
-            (removeItem)="handleRemoveItem($event)" (continueShopping)="handleContinueShopping()"
-            (checkout)="handleCheckout()">
-          </app-cart>
-        </ng-container>
       </ng-container>
     </ng-container>
 

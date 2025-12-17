@@ -13,14 +13,13 @@ import { CartItem } from '../../models/cart-item';
 import { CartService } from '../../services/cart';
 import { ProductCatalog } from './product-catalog/product-catalog';
 import { ProductCustomizer } from './product-customizer/product-customizer';
-import { Cart } from './cart/cart';
 
-type CustomerView = 'catalog' | 'customizer' | 'cart';
+type CustomerView = 'catalog' | 'customizer';
 
 @Component({
   selector: 'app-product-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, ProductCatalog, ProductCustomizer, Cart],
+  imports: [CommonModule, FormsModule, ProductCatalog, ProductCustomizer],
   templateUrl: './product-page.html',
   styleUrls: ['./product-page.css']
 })
@@ -30,8 +29,6 @@ export class ProductPage implements OnInit {
 
   view: CustomerView = 'catalog';
   selectedProduct: Product | null = null;
-
-
 
   // ---- CUSTOMER flow ----
 
@@ -43,7 +40,7 @@ export class ProductPage implements OnInit {
 
     this.route.queryParamMap.subscribe(params => {
       const view = params.get('view') as CustomerView | null;
-      if (view === 'cart' || view === 'catalog' || view === 'customizer') {
+      if (view === 'customizer') {
         this.view = view;
       } else {
         this.view = 'catalog';
@@ -60,10 +57,6 @@ export class ProductPage implements OnInit {
         console.error('Failed to load products', err);
       }
     });
-  }
-
-  get cartItems(): CartItem[] {
-    return this.cartService.getItems();
   }
 
   handleSelectProduct(product: Product): void {
@@ -110,38 +103,16 @@ export class ProductPage implements OnInit {
       price: event.price
     };
 
-    // this.cartService.addItem(item);
     const added = this.cartService.addItem(item);
     if (!added) {
       const availableStock = this.getAvailableStock(event.product);
       alert(`Cannot add ${event.product.name} to cart. Only ${availableStock} unit(s) available.`);
       return;
     }
-    this.view = 'customizer';
-  }
-
-  handleUpdateQuantity(event: { itemId: string; quantity: number }): void {
-    const items = this.cartService.getItems();
-    const item = items.find(i => i.id === event.itemId);
-
-    if (!item) {
-      return;
-    }
-
-    // Validate stock before updating
-    const availableStock = this.getAvailableStock(item.product);
-    const otherItemsQuantity = items
-      .filter(i => i.id !== event.itemId && i.product.productId === item.product.productId)
-      .reduce((sum, i) => sum + i.quantity, 0);
-
-    if (otherItemsQuantity + event.quantity > availableStock) {
-      const maxAllowed = availableStock - otherItemsQuantity;
-      alert(`Only ${availableStock} unit(s) available for ${item.product.name}. Maximum ${maxAllowed} unit(s) can be added.`);
-      // Set quantity to maximum allowed
-      event.quantity = Math.max(1, maxAllowed);
-    }
-
-    this.cartService.updateQuantity(event.itemId, event.quantity, item.product);
+    // Stay on customizer or go back to catalog?
+    // Let's go back to catalog after adding
+    alert('Product added to cart!');
+    this.handleBackToCatalog();
   }
 
   isProductInStock(product: Product): boolean {
@@ -153,32 +124,6 @@ export class ProductPage implements OnInit {
       return Infinity;
     }
     return product.stockLevel;
-  }
-
-  handleRemoveItem(id: string): void {
-    this.cartService.removeItem(id);
-  }
-
-  handleContinueShopping(): void {
-    this.view = 'catalog';
-  }
-
-  handleCheckout(): void {
-    const user = this.authService.getCurrentUser();
-
-    if (!user || user.role !== 'CUSTOMER' || !user.id) {
-      alert('Please log in as a customer before placing an order.');
-      return;
-    }
-
-    const items = this.cartService.getItems();
-    if (!items.length) {
-      alert('Your cart is empty.');
-      return;
-    }
-
-    // Navigate to payment page instead of creating order directly
-    this.router.navigate(['/payment']);
   }
 
 

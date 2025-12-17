@@ -57,10 +57,24 @@ export class NotificationService implements OnDestroy {
 
     // Called by App component or Auth Service on login
     public loadForUser(userId: number) {
-        if (this.currentUserId === userId) return; // already loaded
+        if (this.currentUserId === userId) {
+            // Force reload even if same user (for manual refresh)
+            this.startListening();
+            return;
+        }
         this.currentUserId = userId;
         this.loadReadNotifications();
         this.startListening();
+    }
+
+    /**
+     * Re-fetch notifications from the backend.
+     * Useful when an order status is updated.
+     */
+    public refresh(): void {
+        if (this.currentUserId) {
+            this.startListening();
+        }
     }
 
     public clear() {

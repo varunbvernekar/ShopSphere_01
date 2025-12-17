@@ -7,12 +7,10 @@ import { InventoryService } from '../../../services/inventory';
 import { ProductService } from '../../../services/product';
 import { Product } from '../../../models/product';
 
-import { RouterLink } from '@angular/router';
-
 @Component({
   selector: 'app-admin-inventory',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './admin-inventory.html',
   styleUrls: ['./admin-inventory.css']
 })
@@ -147,7 +145,6 @@ export class AdminInventory implements OnInit {
         alert('Inventory updated successfully!');
         this.refreshData();
         this.closeStockEditor();
-        this.triggerLowStockRefresh();
       },
       error: err => {
         console.error('Failed to update inventory', err);
@@ -223,23 +220,16 @@ export class AdminInventory implements OnInit {
       next: () => {
         alert('Product deleted successfully');
         this.refreshData();
-        // Trigger generic update event
-        if (typeof window !== 'undefined') {
-          window.dispatchEvent(new CustomEvent('inventoryUpdated'));
-        }
+        // InventoryService will need manual refresh if we don't call it here?
+        // Since we used ProductService directly to delete, InventoryService doesn't know.
+        // We should probably expose refreshLowStockCount() publicly so we can call it.
+        this.inventoryService.refreshLowStockCount();
       },
       error: err => {
         console.error('Failed to delete product', err);
         alert('Failed to delete product');
       }
     });
-  }
-
-  private triggerLowStockRefresh(): void {
-    // Dispatch a custom event that the app component can listen to (only in browser)
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('inventoryUpdated'));
-    }
   }
 }
 
