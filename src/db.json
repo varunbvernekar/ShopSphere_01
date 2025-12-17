@@ -94,6 +94,60 @@
       "gender": "Other",
       "preferredLanguage": "English",
       "id": "9"
+    },
+    {
+      "id": "10",
+      "name": "zzz",
+      "email": "zzz@gmail.com",
+      "phoneNumber": "1234567899",
+      "password": "zzz123",
+      "role": "CUSTOMER",
+      "address": {
+        "street": "LIG 6 2nd phase housing board",
+        "city": "Chikmagalur",
+        "state": "Karnataka",
+        "zipCode": "577102",
+        "country": "India"
+      },
+      "dateOfBirth": "",
+      "gender": "Male",
+      "preferredLanguage": ""
+    },
+    {
+      "id": "11",
+      "name": "aaaaa",
+      "email": "aaaaa@gmail.com",
+      "phoneNumber": "1111111111",
+      "password": "aaaaa123",
+      "role": "CUSTOMER",
+      "address": {
+        "street": "",
+        "city": "",
+        "state": "",
+        "zipCode": "",
+        "country": ""
+      },
+      "dateOfBirth": "",
+      "gender": "",
+      "preferredLanguage": ""
+    },
+    {
+      "id": "12",
+      "name": "sss",
+      "email": "sss@gmail.com",
+      "phoneNumber": "9876543245",
+      "password": "sss123",
+      "role": "CUSTOMER",
+      "address": {
+        "street": "",
+        "city": "",
+        "state": "",
+        "zipCode": "",
+        "country": ""
+      },
+      "dateOfBirth": "",
+      "gender": "",
+      "preferredLanguage": ""
     }
   ],
   "products": [
@@ -104,7 +158,7 @@
       "category": "Jewelry",
       "basePrice": 1200,
       "previewImage": "/assets/images/ring.jpg",
-      "stockLevel": 29,
+      "stockLevel": 27,
       "reorderThreshold": 10,
       "isActive": true,
       "customOptions": [
@@ -295,7 +349,7 @@
       "category": "Home Decor",
       "basePrice": 45,
       "previewImage": "/assets/images/macrame.png",
-      "stockLevel": 6,
+      "stockLevel": 5,
       "reorderThreshold": 5,
       "isActive": true,
       "productId": "P009",
@@ -1612,6 +1666,102 @@
         "city": "Chikmagalur",
         "state": "Karnataka",
         "zipCode": "577102",
+        "country": "India"
+      }
+    },
+    {
+      "id": "60f8",
+      "userId": 12,
+      "placedOn": "17/12/2025",
+      "amount": 1351.5,
+      "status": "Confirmed",
+      "items": [
+        {
+          "productId": "P001",
+          "name": "Handcrafted Silver Ring,",
+          "image": "/assets/images/ring.jpg",
+          "quantity": 1,
+          "color": "",
+          "size": "Small",
+          "material": "Copper",
+          "price": 1215
+        }
+      ],
+      "estimatedDelivery": "24/12/2025",
+      "logistics": {
+        "carrier": "Not assigned",
+        "trackingId": "-",
+        "currentLocation": "Order confirmed"
+      },
+      "deliveryAddress": {
+        "street": "assssssssdff",
+        "city": "ddd",
+        "state": "wefewf",
+        "zipCode": "11111",
+        "country": "India"
+      }
+    },
+    {
+      "id": "5cfc",
+      "userId": "10",
+      "placedOn": "17/12/2025",
+      "amount": 1351.5,
+      "status": "Confirmed",
+      "items": [
+        {
+          "productId": "P001",
+          "name": "Handcrafted Silver Ring,",
+          "image": "/assets/images/ring.jpg",
+          "quantity": 1,
+          "color": "",
+          "size": "Small",
+          "material": "Copper",
+          "price": 1215
+        }
+      ],
+      "estimatedDelivery": "24/12/2025",
+      "logistics": {
+        "carrier": "Not assigned",
+        "trackingId": "-",
+        "currentLocation": "Order confirmed"
+      },
+      "deliveryAddress": {
+        "street": "LIG 6 2nd phase housing board",
+        "city": "Chikmagalur",
+        "state": "Karnataka",
+        "zipCode": "577102",
+        "country": "India"
+      }
+    },
+    {
+      "id": "f225",
+      "userId": "10",
+      "placedOn": "17/12/2025",
+      "amount": 59,
+      "status": "Packed",
+      "items": [
+        {
+          "productId": "P009",
+          "name": "Boho Macrame Wall Hanging",
+          "image": "/assets/images/macrame.png",
+          "quantity": 1,
+          "color": "Silver",
+          "size": "Small",
+          "material": "Standard",
+          "price": 40
+        }
+      ],
+      "estimatedDelivery": "24/12/2025",
+      "logistics": {
+        "carrier": "Not assigned",
+        "trackingId": "-",
+        "currentLocation": "Order confirmed"
+      },
+      "deliveryAddress": {
+        "street": "sssssss",
+        "city": "Chikmagalurdjhbc",
+        "state": "llll",
+        "zipCode": "577222",
         "country": "India"
       }
     }

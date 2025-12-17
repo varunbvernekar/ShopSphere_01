@@ -51,7 +51,6 @@ export class Register {
       },
       dateOfBirth: '',
       gender: '',
-      preferredLanguage: ''
     };
 
     this.authService.register(user).subscribe({

@@ -58,7 +58,13 @@ export class Profile implements OnInit {
           phoneNumber: user.phoneNumber || '',
           dateOfBirth: user.dateOfBirth || '',
           gender: user.gender || '',
-          preferredLanguage: user.preferredLanguage || ''
+          address: user.address || {
+            street: '',
+            city: '',
+            state: '',
+            zipCode: '',
+            country: ''
+          }
         };
 
         this.user = completeUser;
@@ -79,8 +85,7 @@ export class Profile implements OnInit {
               ...currentUser,
               phoneNumber: currentUser.phoneNumber || '',
               dateOfBirth: currentUser.dateOfBirth || '',
-              gender: currentUser.gender || '',
-              preferredLanguage: currentUser.preferredLanguage || ''
+              gender: currentUser.gender || ''
             };
             this.user = completeUser;
             this.originalUser = JSON.parse(JSON.stringify(completeUser));
@@ -109,8 +114,7 @@ export class Profile implements OnInit {
       ...this.user,
       phoneNumber: this.user.phoneNumber || '',
       dateOfBirth: this.user.dateOfBirth || '',
-      gender: this.user.gender || '',
-      preferredLanguage: this.user.preferredLanguage || ''
+      gender: this.user.gender || ''
     };
 
     this.userService.updateUser(userToSave).subscribe({
@@ -121,7 +125,13 @@ export class Profile implements OnInit {
           phoneNumber: updatedUser.phoneNumber || '',
           dateOfBirth: updatedUser.dateOfBirth || '',
           gender: updatedUser.gender || '',
-          preferredLanguage: updatedUser.preferredLanguage || ''
+          address: updatedUser.address || {
+            street: '',
+            city: '',
+            state: '',
+            zipCode: '',
+            country: ''
+          }
         };
 
         // Update the current user in auth service

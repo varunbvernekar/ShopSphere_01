@@ -18,5 +18,4 @@ export interface User {
   address?: Address;
   dateOfBirth?: string;
   gender?: string;
-  preferredLanguage?: string;
 }

@@ -39,8 +39,7 @@ export class AuthService {
 
         return this.http.post<User>(`${this.apiUrl}/users`, payload).pipe(
           map(newUser => {
-            // Auto-login after register
-            this.setSession(newUser);
+            // Do not auto-login. User must sign in manually.
             return true;
           })
         );
