@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Order, OrderStatus } from '../../models/order';
@@ -19,6 +20,7 @@ export class OrdersPage implements OnInit {
 
   orders: Order[] = [];
   selectedOrder: Order | null = null;
+  selectedAdminOrder: Order | null = null;
 
   isAdmin = false;
   currentUser: User | null = null;
@@ -32,14 +34,11 @@ export class OrdersPage implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
-    // In SSR, currentUser will be null. Don't show error, just wait.
     if (!this.currentUser || !this.currentUser.id) {
-      // this.errorMessage = 'You must be logged in to view orders.'; // Remove explicit error for SSR
       return;
     }
 
     this.isAdmin = this.currentUser.role === 'ADMIN';
-
     this.loadOrders();
   }
 
@@ -56,7 +55,7 @@ export class OrdersPage implements OnInit {
     request$.subscribe({
       next: orders => {
         this.orders = orders;
-        this.selectedOrder = null; // Don't auto-select any order - user must click to view details
+        this.selectedOrder = null;
         this.isLoading = false;
       },
       error: err => {
@@ -75,7 +74,7 @@ export class OrdersPage implements OnInit {
   }
 
   getTotalItems(order: Order): number {
-    return order.items.reduce((sum, item) => sum + item.quantity, 0);
+    return order.items ? order.items.reduce((sum, item) => sum + item.quantity, 0) : 0;
   }
 
   cancelOrder(order: Order): void {
@@ -83,8 +82,9 @@ export class OrdersPage implements OnInit {
       return;
     }
 
-    // Optimistic update prevention - rely on service
-    this.orderService.cancelOrder(order.id!).subscribe({
+    if (!order.id) return;
+
+    this.orderService.cancelOrder(order.id).subscribe({
       next: (updatedOrder) => {
         alert('Order cancelled successfully.');
         // update local list
@@ -104,7 +104,6 @@ export class OrdersPage implements OnInit {
   }
 
   // ADMIN VIEW ACTIONS
-  selectedAdminOrder: Order | null = null;
 
   viewAdminOrderDetails(order: Order): void {
     this.selectedAdminOrder = order;
@@ -143,10 +142,8 @@ export class OrdersPage implements OnInit {
           this.notifyCustomer(updated);
         }
 
-        // Dispatch event to refresh notification count (only in browser)
-        if (typeof window !== 'undefined') {
-          window.dispatchEvent(new CustomEvent('orderUpdated'));
-        }
+        // Dispatch event to refresh notification count
+        window.dispatchEvent(new CustomEvent('orderUpdated'));
       },
       error: err => {
         console.error('Failed to update order', err);
@@ -157,29 +154,22 @@ export class OrdersPage implements OnInit {
 
   private notifyCustomer(order: Order): void {
     // In a real application, this would send an email or push notification
-    // For now, we'll just log it and show a confirmation
     console.log(`Customer notification: Order #${order.id} status changed to ${order.status}`);
-    alert(`Customer has been notified about order #${order.id
-      } status change to ${order.status} `);
+    alert(`Customer has been notified about order #${order.id} status change to ${order.status}`);
   }
 
   getStatusIcon(status: OrderStatus): string {
     switch (status) {
-      case 'Confirmed':
-        return 'schedule';
-      case 'Packed':
-        return 'package_2';
-      case 'Shipped':
-        return 'local_shipping';
-      case 'Delivered':
-        return 'check_circle';
-      default:
-        return 'assignment';
+      case 'Confirmed': return 'schedule';
+      case 'Packed': return 'package_2';
+      case 'Shipped': return 'local_shipping';
+      case 'Delivered': return 'check_circle';
+      default: return 'assignment';
     }
   }
 
   getOrderId(order: Order): string {
     if (!order.id) return 'ORD000';
-    return `ORD${order.id.toString().padStart(3, '0')} `;
+    return `ORD${order.id.toString().padStart(3, '0')}`;
   }
 }

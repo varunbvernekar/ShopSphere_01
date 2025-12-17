@@ -54,20 +54,18 @@ export class App implements OnInit, OnDestroy {
     }
 
     // Only add event listeners in browser environment
-    if (typeof window !== 'undefined') {
-      // Listen for inventory updates to refresh low stock count
-      window.addEventListener('inventoryUpdated', () => {
-        this.loadLowStockCount();
-      });
+    // Listen for inventory updates to refresh low stock count
+    window.addEventListener('inventoryUpdated', () => {
+      this.loadLowStockCount();
+    });
 
-      // Order updates might now be handled by global polling or service logic
-      // But keeping listener if needed, though NotificationService should auto-update if it polls
-      // For now, let's ensure we reload if an event fires
-      window.addEventListener('orderUpdated', () => {
-        const u = this.authService.getCurrentUser();
-        if (u?.id) this.notificationService.loadForUser(u.id); // Triggers reload
-      });
-    }
+    // Order updates might now be handled by global polling or service logic
+    // But keeping listener if needed, though NotificationService should auto-update if it polls
+    // For now, let's ensure we reload if an event fires
+    window.addEventListener('orderUpdated', () => {
+      const u = this.authService.getCurrentUser();
+      if (u?.id) this.notificationService.loadForUser(u.id); // Triggers reload
+    });
   }
 
   ngOnDestroy(): void {

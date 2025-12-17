@@ -74,26 +74,22 @@ export class NotificationService implements OnDestroy {
 
     private loadReadNotifications(): void {
         if (!this.currentUserId) return;
-        if (typeof window !== 'undefined' && window.localStorage) {
-            const stored = localStorage.getItem(`readNotifications_${this.currentUserId}`);
-            if (stored) {
-                try {
-                    this.readNotifications = new Set(JSON.parse(stored));
-                } catch (e) {
-                    console.error('Failed to load read notifications', e);
-                }
+        const stored = localStorage.getItem(`readNotifications_${this.currentUserId}`);
+        if (stored) {
+            try {
+                this.readNotifications = new Set(JSON.parse(stored));
+            } catch (e) {
+                console.error('Failed to load read notifications', e);
             }
         }
     }
 
     private saveReadNotifications(): void {
         if (!this.currentUserId) return;
-        if (typeof window !== 'undefined' && window.localStorage) {
-            localStorage.setItem(
-                `readNotifications_${this.currentUserId}`,
-                JSON.stringify(Array.from(this.readNotifications))
-            );
-        }
+        localStorage.setItem(
+            `readNotifications_${this.currentUserId}`,
+            JSON.stringify(Array.from(this.readNotifications))
+        );
     }
 
     private startListening() {

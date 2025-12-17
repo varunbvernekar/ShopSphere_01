@@ -13,11 +13,9 @@ export class AuthService {
 
   constructor(private http: HttpClient) {
     // Restore user from token if available
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const token = localStorage.getItem(this.tokenKey);
-      if (token) {
-        this.currentUser = this.decodeToken(token);
-      }
+    const token = localStorage.getItem(this.tokenKey);
+    if (token) {
+      this.currentUser = this.decodeToken(token);
     }
   }
 
@@ -73,10 +71,8 @@ export class AuthService {
 
   logout(): void {
     this.currentUser = null;
-    if (typeof window !== 'undefined' && window.localStorage) {
-      localStorage.removeItem(this.tokenKey);
-      localStorage.removeItem('currentUser'); // Cleanup old method if exists
-    }
+    localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem('currentUser'); // Cleanup old method if exists
   }
 
   getCurrentUser(): User | null {
@@ -88,10 +84,7 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      return localStorage.getItem(this.tokenKey);
-    }
-    return null;
+    return localStorage.getItem(this.tokenKey);
   }
 
   /** Update current user in memory and update token */
@@ -103,14 +96,12 @@ export class AuthService {
 
   private setSession(user: User): void {
     this.currentUser = user;
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const token = this.generateMockJwt(user);
-      localStorage.setItem(this.tokenKey, token);
+    const token = this.generateMockJwt(user);
+    localStorage.setItem(this.tokenKey, token);
 
-      // We also keep 'currentUser' for now to support legacy code that might read it directly? 
-      // Actually, let's migrate fully to token. But keeping 'currentUser' cleaned up.
-      localStorage.removeItem('currentUser');
-    }
+    // We also keep 'currentUser' for now to support legacy code that might read it directly? 
+    // Actually, let's migrate fully to token. But keeping 'currentUser' cleaned up.
+    localStorage.removeItem('currentUser');
   }
 
   /**
