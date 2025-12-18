@@ -3,6 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user';
 import { Observable, of, map, switchMap } from 'rxjs';
 
+/**
+ * Service responsible for managing user authentication, registration, and session state.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -31,17 +34,11 @@ export class AuthService {
           return of(false);
         }
 
-        const maxId = users.reduce((max, u) => Math.max(max, u.id ?? 0), 0);
-        const payload: User = {
-          ...user,
-          id: maxId + 1
-        };
+        // json-server generates a numeric ID automatically if we dont provide one
+        const { id, ...payload } = user;
 
         return this.http.post<User>(`${this.apiUrl}/users`, payload).pipe(
-          map(newUser => {
-            // Do not auto-login. User must sign in manually.
-            return true;
-          })
+          map(() => true)
         );
       })
     );
@@ -68,20 +65,31 @@ export class AuthService {
     );
   }
 
+  /**
+   * Logs out the current user by clearing memory state and localStorage tokens.
+   */
   logout(): void {
     this.currentUser = null;
     localStorage.removeItem(this.tokenKey);
-    localStorage.removeItem('currentUser'); // Cleanup old method if exists
   }
 
+  /**
+   * Returns the currently authenticated user or null.
+   */
   getCurrentUser(): User | null {
     return this.currentUser;
   }
 
+  /**
+   * Checks if a user is currently logged in.
+   */
   isLoggedIn(): boolean {
     return this.currentUser != null;
   }
 
+  /**
+   * Retrieves the current authentication token from storage.
+   */
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }

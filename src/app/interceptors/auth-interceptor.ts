@@ -8,10 +8,16 @@ import {
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth';
 
+/**
+ * Intercepts HTTP requests and attaches appropriate auth headers if a user is logged in.
+ */
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) { }
 
+  /**
+   * Main interception method to attach bearer tokens.
+   */
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler

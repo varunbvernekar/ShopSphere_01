@@ -31,8 +31,9 @@ export class Register {
   onSubmit(): void {
     this.errorMessage = '';
 
-    if (!this.name || !this.email || !this.phoneNumber || !this.password) {
-      this.errorMessage = 'All fields are required.';
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(this.password)) {
+      this.errorMessage = 'Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.';
       return;
     }
 

@@ -40,12 +40,21 @@
             <div class="form-group horizontal">
                 <div class="half" style="width: 100%;">
                     <label for="password">Password</label>
-                    <input id="password" type="password" [(ngModel)]="password" name="password" required minlength="6"
+                    <input id="password" type="password" [(ngModel)]="password" name="password" required
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
                         autocomplete="new-password" #passwordInput="ngModel" />
                     <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)"
                         class="error-text" style="color: #ef4444; font-size: 12px; margin-top: 4px;">
                         <div *ngIf="passwordInput.errors?.['required']">Password is required.</div>
-                        <div *ngIf="passwordInput.errors?.['minlength']">Password must be at least 6 characters long.
+                        <div *ngIf="passwordInput.errors?.['pattern']">
+                            Password must meet all requirements:
+                            <ul style="margin: 4px 0 0 16px; padding: 0;">
+                                <li>At least 8 characters</li>
+                                <li>An uppercase letter</li>
+                                <li>A lowercase letter</li>
+                                <li>A number</li>
+                                <li>A special character (@$!%*?&)</li>
+                            </ul>
                         </div>
                     </div>
                 </div>

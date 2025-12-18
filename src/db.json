@@ -42,6 +42,40 @@
       "dateOfBirth": "",
       "gender": "",
       "preferredLanguage": ""
+    },
+    {
+      "id": "13",
+      "name": "supraj",
+      "email": "supraj@gmail.com",
+      "phoneNumber": "1234567890",
+      "password": "Supraj@123",
+      "role": "CUSTOMER",
+      "address": {
+        "street": "",
+        "city": "",
+        "state": "",
+        "zipCode": "",
+        "country": ""
+      },
+      "dateOfBirth": "",
+      "gender": ""
+    },
+    {
+      "id": "6471",
+      "name": "vvv",
+      "email": "vvv@gmail.com",
+      "phoneNumber": "1231231231",
+      "password": "Vvv@1234",
+      "role": "CUSTOMER",
+      "address": {
+        "street": "LIG 6 2nd phase housing board",
+        "city": "Chikmagalur",
+        "state": "Karnataka",
+        "zipCode": "577102",
+        "country": "India"
+      },
+      "dateOfBirth": "",
+      "gender": "Female"
     }
   ],
   "products": [
@@ -142,7 +176,7 @@
       "category": "Home Decor",
       "basePrice": 95,
       "previewImage": "/assets/images/woven_tapestry.jpg",
-      "stockLevel": 0,
+      "stockLevel": 9,
       "reorderThreshold": 8,
       "isActive": true,
       "customOptions": [
@@ -150,40 +184,29 @@
           "type": "colour",
           "values": [
             "Silver",
-            "Gold",
-            "Rose Gold"
+            "Gold"
           ],
           "priceAdjustment": {
             "Silver": 0,
-            "Gold": 15,
-            "Rose Gold": 10
+            "Gold": 15
           }
         },
         {
           "type": "size",
           "values": [
-            "Small",
-            "Medium",
-            "Large"
+            "Small"
           ],
           "priceAdjustment": {
-            "Small": -5,
-            "Medium": 0,
-            "Large": 10
+            "Small": -5
           }
         },
         {
           "type": "material",
-          "values": [
-            "Standard",
-            "Premium"
-          ],
-          "priceAdjustment": {
-            "Standard": 0,
-            "Premium": 25
-          }
+          "values": [],
+          "priceAdjustment": {}
         }
-      ]
+      ],
+      "productId": "P004"
     },
     {
       "id": "P006",
@@ -243,7 +266,7 @@
       "category": "Home Decor",
       "basePrice": 45,
       "previewImage": "/assets/images/macrame.png",
-      "stockLevel": 5,
+      "stockLevel": 4,
       "reorderThreshold": 5,
       "isActive": true,
       "productId": "P009",
@@ -937,7 +960,7 @@
   "orders": [
     {
       "id": "4c53",
-      "userId": "6",
+      "userId": 6,
       "placedOn": "9/12/2025",
       "amount": 97.5,
       "status": "Cancelled",
@@ -968,7 +991,7 @@
       }
     },
     {
-      "userId": "6",
+      "userId": 6,
       "placedOn": "15/12/2025",
       "amount": 59,
       "status": "Confirmed",
@@ -1000,7 +1023,7 @@
       "id": "phfEI2i"
     },
     {
-      "userId": "6",
+      "userId": 6,
       "placedOn": "15/12/2025",
       "amount": 64.5,
       "status": "Confirmed",
@@ -1032,7 +1055,7 @@
       "id": "jezjzJr"
     },
     {
-      "userId": "6",
+      "userId": 6,
       "placedOn": "15/12/2025",
       "amount": 75.5,
       "status": "Confirmed",
@@ -1065,7 +1088,7 @@
     },
     {
       "id": "7750",
-      "userId": "6",
+      "userId": 6,
       "placedOn": "17/12/2025",
       "amount": 141.5,
       "status": "Confirmed",
@@ -1097,7 +1120,7 @@
     },
     {
       "id": "c0eb",
-      "userId": "6",
+      "userId": 6,
       "placedOn": "17/12/2025",
       "amount": 59,
       "status": "Packed",
@@ -1129,7 +1152,7 @@
     },
     {
       "id": "5aa4",
-      "userId": "6",
+      "userId": 6,
       "placedOn": "17/12/2025",
       "amount": 59,
       "status": "Packed",
@@ -1193,7 +1216,7 @@
     },
     {
       "id": "5cfc",
-      "userId": "10",
+      "userId": 10,
       "placedOn": "17/12/2025",
       "amount": 1351.5,
       "status": "Confirmed",
@@ -1225,7 +1248,7 @@
     },
     {
       "id": "f225",
-      "userId": "10",
+      "userId": 10,
       "placedOn": "17/12/2025",
       "amount": 59,
       "status": "Packed",
@@ -1252,6 +1275,70 @@
         "city": "Chikmagalurdjhbc",
         "state": "llll",
         "zipCode": "577222",
+        "country": "India"
+      }
+    },
+    {
+      "id": "738f",
+      "userId": "6471",
+      "placedOn": "18/12/2025",
+      "amount": 64.5,
+      "status": "Confirmed",
+      "items": [
+        {
+          "productId": "P009",
+          "name": "Boho Macrame Wall Hanging",
+          "image": "/assets/images/macrame.png",
+          "quantity": 1,
+          "color": "Silver",
+          "size": "Medium",
+          "material": "Standard",
+          "price": 45
+        }
+      ],
+      "estimatedDelivery": "25/12/2025",
+      "logistics": {
+        "carrier": "Not assigned",
+        "trackingId": "-",
+        "currentLocation": "Order confirmed"
+      },
+      "deliveryAddress": {
+        "street": "LIG 6 2nd phase housing board",
+        "city": "Chikmagalur",
+        "state": "Karnataka",
+        "zipCode": "577102",
+        "country": "India"
+      }
+    },
+    {
+      "id": "2db5",
+      "userId": "6471",
+      "placedOn": "18/12/2025",
+      "amount": 130.5,
+      "status": "Delivered",
+      "items": [
+        {
+          "productId": "P004",
+          "name": "Handwoven Wall Tapestry",
+          "image": "/assets/images/woven_tapestry.jpg",
+          "quantity": 1,
+          "color": "Gold",
+          "size": "Small",
+          "material": "",
+          "price": 105
+        }
+      ],
+      "estimatedDelivery": "25/12/2025",
+      "logistics": {
+        "carrier": "Not assigned",
+        "trackingId": "-",
+        "currentLocation": "Order confirmed"
+      },
+      "deliveryAddress": {
+        "street": "LIG 6 2nd phase housing board",
+        "city": "Chikmagalur",
+        "state": "Karnataka",
+        "zipCode": "577102",
         "country": "India"
       }
     }

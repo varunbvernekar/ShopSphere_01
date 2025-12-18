@@ -1,32 +1,42 @@
-// src/app/services/cart.ts
 import { Injectable } from '@angular/core';
 import { CartItem } from '../models/cart-item';
 import { Product } from '../models/product';
 
+/**
+ * Managed the customer shopping cart, including stock validation and item management.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
   private items: CartItem[] = [];
 
+  /**
+   * Returns all items currently in the cart.
+   */
   getItems(): CartItem[] {
     return this.items;
   }
 
+  /**
+   * Attempts to add an item to the cart.
+   * Performs stock validation before adding.
+   * @returns true if successful, false if out of stock.
+   */
   addItem(item: CartItem): boolean {
     // Check if product is in stock
     if (!this.isProductInStock(item.product)) {
       return false;
     }
-    
+
     // Check if adding this item would exceed stock
     const existingQuantity = this.getTotalQuantityForProduct(item.product.productId);
     const availableStock = this.getAvailableStock(item.product);
-    
+
     if (existingQuantity + item.quantity > availableStock) {
       return false;
     }
-    
+
     this.items.push(item);
     return true;
   }
@@ -43,7 +53,7 @@ export class CartService {
       const otherItemsQuantity = this.items
         .filter(i => i.id !== itemId && i.product.productId === product.productId)
         .reduce((sum, i) => sum + i.quantity, 0);
-      
+
       if (otherItemsQuantity + quantity > availableStock) {
         return false;
       }

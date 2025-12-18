@@ -9,6 +9,9 @@ import { User } from '../../models/user';
 import { FormsModule } from '@angular/forms';
 import { DeliveryTracking } from './delivery-tracking/delivery-tracking';
 
+/**
+ * Component to display and manage user orders, with distinct views for customers and admins.
+ */
 @Component({
   selector: 'app-orders',
   standalone: true,
@@ -70,6 +73,9 @@ export class OrdersPage implements OnInit {
 
   // CUSTOMER VIEW HELPERS
 
+  /**
+   * Selects an order to view its details. Only applicable for customer view.
+   */
   selectOrder(order: Order): void {
     if (this.isAdmin) return; // admin has separate UI
     this.selectedOrder = order;
@@ -79,6 +85,9 @@ export class OrdersPage implements OnInit {
     return order.items ? order.items.reduce((sum, item) => sum + item.quantity, 0) : 0;
   }
 
+  /**
+   * Cancels as order. Requires user confirmation.
+   */
   cancelOrder(order: Order): void {
     if (!confirm('Are you sure you want to cancel this order?')) {
       return;

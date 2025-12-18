@@ -5,20 +5,29 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
 
+/**
+ * Handles operations related to the user profile, such as fetching data and updating details.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   private readonly apiUrl = 'http://localhost:3000';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  /** Get user by ID */
+  /**
+   * Fetches user profile data from the server.
+   * @param userId The ID of the user to fetch.
+   */
   getUser(userId: number): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/users/${userId}`);
   }
 
-  /** Update user profile */
+  /**
+   * Updates an existing user profile on the server.
+   * @param user The updated user object.
+   */
   updateUser(user: User): Observable<User> {
     if (!user.id) {
       throw new Error('User id is required to update a user');

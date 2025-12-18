@@ -5,6 +5,9 @@ import { Observable, BehaviorSubject, tap, switchMap } from 'rxjs';
 import { Product } from '../models/product';
 import { ProductService } from './product';
 
+/**
+ * Monitoring and management of product stock levels and reorder thresholds.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -20,10 +23,17 @@ export class InventoryService {
     this.refreshLowStockCount();
   }
 
+  /**
+   * Retrieves all products from the underlying product service.
+   */
   getProducts(): Observable<Product[]> {
     return this.productService.getProducts();
   }
 
+  /**
+   * Re-evaluates which products are below their reorder threshold.
+   * Updates the lowStockCount$ observable.
+   */
   refreshLowStockCount(): void {
     this.getProducts().subscribe({
       next: products => {

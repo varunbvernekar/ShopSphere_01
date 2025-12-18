@@ -1,5 +1,3 @@
-// src/app/components/customer/profile/profile.ts
-
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -7,6 +5,9 @@ import { User, Address } from '../../models/user';
 import { AuthService } from '../../services/auth';
 import { UserService } from '../../services/user';
 
+/**
+ * Component for viewing and editing user profile information.
+ */
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -31,6 +32,9 @@ export class Profile implements OnInit {
     this.loadProfile();
   }
 
+  /**
+   * Loads the current user's profile data from the server.
+   */
   loadProfile(): void {
     const currentUser = this.authService.getCurrentUser();
 
@@ -99,6 +103,9 @@ export class Profile implements OnInit {
     });
   }
 
+  /**
+   * Handles profile update form submission.
+   */
   onSubmit(): void {
     if (!this.user || !this.user.id) {
       this.errorMessage = 'User data is invalid.';
