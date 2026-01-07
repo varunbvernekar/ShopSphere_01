@@ -9,7 +9,7 @@ import { Observable, map, switchMap } from 'rxjs';
   providedIn: 'root'
 })
 export class ProductService {
-  private readonly apiUrl = 'http://localhost:3000';
+  private readonly apiUrl = 'http://localhost:8080/api/v1';
 
   constructor(private http: HttpClient) { }
 

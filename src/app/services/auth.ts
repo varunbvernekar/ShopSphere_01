@@ -12,65 +12,68 @@ import { Observable, of, map, switchMap } from 'rxjs';
 export class AuthService {
   private currentUser: User | null = null;
   private readonly tokenKey = 'auth_token';
-  private readonly apiUrl = 'http://localhost:3000';
+  // Updated to point to Spring Boot Backend
+  private readonly apiUrl = 'http://localhost:8080/api/v1/auth';
 
   constructor(private http: HttpClient) {
     // Restore user from token if available
     const token = localStorage.getItem(this.tokenKey);
     if (token) {
-      this.currentUser = this.decodeToken(token);
+      // In a real app we might validate this token with backend, 
+      // but for now we decode it or just keep the user if we stored it?
+      // Actually, let's keep it simple: we try to restore session.
+      // If we stored the user object in localstorage we could restore it.
+      // But usually we just have the token.
+      // For this demo, we'll try to rely on what we have or just re-login.
+      // Let's assume the previous code logic which seemed to try decoding.
+      // But our new backend returns a dummy token.
+
+      // Let's rely on 'currentUser' stored in localStorage if we want persistence
+      // without a real /me endpoint check on load (for now).
+      const storedUser = localStorage.getItem('currentUser');
+      if (storedUser) {
+        this.currentUser = JSON.parse(storedUser);
+      }
     }
   }
 
   /**
-   * Register a new user via db.json (/users).
-   * Returns true if registered, false if email already exists.
+   * Register a new user via Spring Boot Backend.
    */
   register(user: User): Observable<boolean> {
-    return this.http.get<User[]>(`${this.apiUrl}/users`).pipe(
-      switchMap(users => {
-        const exists = users.some(u => u.email === user.email);
-        if (exists) {
-          return of(false);
+    return this.http.post<any>(`${this.apiUrl}/register`, user).pipe(
+      map(response => {
+        if (response && response.token) {
+          this.setSession(response.user, response.token);
+          return true;
         }
-
-        // json-server generates a numeric ID automatically if we dont provide one
-        const { id, ...payload } = user;
-
-        return this.http.post<User>(`${this.apiUrl}/users`, payload).pipe(
-          map(() => true)
-        );
+        return false;
       })
     );
   }
 
   /**
-   * Login against /users in db.json.
-   * Sets currentUser in memory and saves JWT to localStorage.
+   * Login against Spring Boot Backend.
    */
   login(email: string, password: string): Observable<boolean> {
-    return this.http.get<User[]>(`${this.apiUrl}/users`).pipe(
-      map(users => {
-        const found = users.find(
-          u => u.email === email && u.password === password
-        );
-
-        if (!found) {
-          return false;
+    return this.http.post<any>(`${this.apiUrl}/login`, { email, password }).pipe(
+      map(response => {
+        if (response && response.token) {
+          this.setSession(response.user, response.token);
+          return true;
         }
-
-        this.setSession(found);
-        return true;
+        return false;
       })
     );
   }
 
   /**
-   * Logs out the current user by clearing memory state and localStorage tokens.
+   * Logs out the current user by clearing memory state and localStorage.
    */
   logout(): void {
     this.currentUser = null;
     localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem('currentUser');
   }
 
   /**
@@ -94,44 +97,17 @@ export class AuthService {
     return localStorage.getItem(this.tokenKey);
   }
 
-  /** Update current user in memory and update token */
+  /** Update current user in memory */
   updateCurrentUser(user: User): void {
-    this.setSession(user);
-  }
-
-  // --- JWT Helper Methods ---
-
-  private setSession(user: User): void {
     this.currentUser = user;
-    const token = this.generateMockJwt(user);
+    localStorage.setItem('currentUser', JSON.stringify(user));
+  }
+
+  // --- Helper Methods ---
+
+  private setSession(user: User, token: string): void {
+    this.currentUser = user;
     localStorage.setItem(this.tokenKey, token);
-
-    // We also keep 'currentUser' for now to support legacy code that might read it directly? 
-    // Actually, let's migrate fully to token. But keeping 'currentUser' cleaned up.
-    localStorage.removeItem('currentUser');
-  }
-
-  /**
-   * Simulates generating a JWT token
-   * Format: header.payload.signature
-   */
-  private generateMockJwt(user: User): string {
-    const header = btoa(JSON.stringify({ alg: "HS256", typ: "JWT" }));
-    const payload = btoa(JSON.stringify(user));
-    const signature = "dummy_signature_secret"; // Normally this is a hash
-    return `${header}.${payload}.${signature}`;
-  }
-
-  private decodeToken(token: string): User | null {
-    try {
-      const parts = token.split('.');
-      if (parts.length !== 3) return null;
-
-      const payload = atob(parts[1]);
-      return JSON.parse(payload);
-    } catch (e) {
-      console.error('Failed to decode token', e);
-      return null;
-    }
+    localStorage.setItem('currentUser', JSON.stringify(user));
   }
 }

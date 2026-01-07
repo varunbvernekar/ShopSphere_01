@@ -8,7 +8,6 @@ import { AuthService } from '../../services/auth';
 import { OrderService } from '../../services/order';
 import { ProductService } from '../../services/product';
 import { InventoryService } from '../../services/inventory';
-import { NotificationService } from '../../services/notification';
 import { Order, OrderStatus, Address } from '../../models/order';
 import { CartItem } from '../../models/cart-item';
 
@@ -65,7 +64,6 @@ export class Payment implements OnInit {
     private orderService: OrderService,
     private productService: ProductService,
     private inventoryService: InventoryService,
-    private notificationService: NotificationService,
     private router: Router
   ) { }
 
@@ -170,8 +168,6 @@ export class Payment implements OnInit {
         // Update inventory after order confirmation
         this.updateInventoryForOrder(orderItems);
 
-        // Refresh notifications
-        this.notificationService.refresh();
 
         this.cartService.clear();
         this.router.navigate(['/orders']);

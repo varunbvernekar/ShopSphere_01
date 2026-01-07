@@ -40,7 +40,7 @@
         "country": ""
       },
       "dateOfBirth": "",
-      "gender": "",
+      "gender": "Female",
       "preferredLanguage": ""
     },
     {
@@ -75,7 +75,7 @@
         "country": "India"
       },
       "dateOfBirth": "",
-      "gender": "Female"
+      "gender": "Other"
     }
   ],
   "products": [

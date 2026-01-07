@@ -43,7 +43,7 @@ export class Cart {
   }
 
   get shipping(): number {
-    return this.items.length > 0 ? 15.0 : 0;
+    return this.items.length > 0 ? 50.0 : 0;
   }
 
   get total(): number {

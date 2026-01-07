@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { Order, OrderStatus } from '../../models/order';
 import { OrderService } from '../../services/order';
 import { AuthService } from '../../services/auth';
-import { NotificationService } from '../../services/notification';
 import { User } from '../../models/user';
 import { FormsModule } from '@angular/forms';
 import { DeliveryTracking } from './delivery-tracking/delivery-tracking';
@@ -33,8 +32,7 @@ export class OrdersPage implements OnInit {
 
   constructor(
     private orderService: OrderService,
-    private authService: AuthService,
-    private notificationService: NotificationService
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -153,8 +151,6 @@ export class OrdersPage implements OnInit {
           this.notifyCustomer(updated);
         }
 
-        // Refresh notifications
-        this.notificationService.refresh();
       },
       error: err => {
         console.error('Failed to update order', err);

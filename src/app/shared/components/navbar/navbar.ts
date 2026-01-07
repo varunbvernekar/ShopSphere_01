@@ -13,21 +13,15 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class Navbar {
     @Input() isAdmin: boolean = false;
     @Input() lowStockCount: number = 0;
-    @Input() notificationCount: number = 0;
     @Input() cartCount: number = 0;
 
     @Output() openLowStockAlertsEvent = new EventEmitter<void>();
-    @Output() openNotificationsEvent = new EventEmitter<void>();
     @Output() logoutEvent = new EventEmitter<void>();
 
     appTitle = 'ShopSphere';
 
     openLowStockAlerts() {
         this.openLowStockAlertsEvent.emit();
-    }
-
-    openNotifications() {
-        this.openNotificationsEvent.emit();
     }
 
     logout() {

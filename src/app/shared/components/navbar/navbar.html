@@ -35,10 +35,6 @@
             </ng-container>
 
             <ng-container *ngIf="!isAdmin">
-                <button class="icon-btn" (click)="openNotifications()" title="Notifications">
-                    <span class="material-symbols-rounded">notifications</span>
-                    <span class="badge info" *ngIf="notificationCount > 0">{{ notificationCount }}</span>
-                </button>
 
                 <a routerLink="/cart" class="icon-btn" title="Cart">
                     <span class="material-symbols-rounded">shopping_cart</span>

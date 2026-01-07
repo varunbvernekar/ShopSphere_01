@@ -220,9 +220,7 @@ export class AdminInventory implements OnInit {
       next: () => {
         alert('Product deleted successfully');
         this.refreshData();
-        // InventoryService will need manual refresh if we don't call it here?
-        // Since we used ProductService directly to delete, InventoryService doesn't know.
-        // We should probably expose refreshLowStockCount() publicly so we can call it.
+
         this.inventoryService.refreshLowStockCount();
       },
       error: err => {
