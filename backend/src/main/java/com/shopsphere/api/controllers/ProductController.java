@@ -1,7 +1,7 @@
 package com.shopsphere.api.controllers;
 
 import com.shopsphere.api.entity.Product;
-import com.shopsphere.api.services.ProductService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,9 @@ import java.util.List;
 @CrossOrigin(origins = "*") // For development
 public class ProductController {
 
-    private final ProductService productService;
+    private final com.shopsphere.api.services.ProductService productService;
+    private final com.shopsphere.api.services.FileStorageService fileStorageService;
+    private final com.fasterxml.jackson.databind.ObjectMapper objectMapper;
 
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts() {
@@ -26,6 +28,24 @@ public class ProductController {
         return productService.getProductById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    /**
+     * Supports both JSON and Multipart (for images)
+     */
+    @PostMapping(consumes = { "multipart/form-data" })
+    public ResponseEntity<Product> createProductWithImage(
+            @RequestPart("product") String productJson,
+            @RequestPart(value = "image", required = false) org.springframework.web.multipart.MultipartFile image)
+            throws java.io.IOException {
+        Product product = objectMapper.readValue(productJson, Product.class);
+
+        if (image != null && !image.isEmpty()) {
+            String imagePath = fileStorageService.saveFile(image);
+            product.setPreviewImage(imagePath);
+        }
+
+        return ResponseEntity.ok(productService.saveProduct(product));
     }
 
     @PostMapping
@@ -41,7 +61,8 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable String id, @RequestBody Product product) {
-        return ResponseEntity.ok(productService.saveProduct(product)); // saveProduct usually handles create/update if ID exists
+        return ResponseEntity.ok(productService.saveProduct(product)); // saveProduct usually handles create/update if
+                                                                       // ID exists
     }
 
     @PatchMapping("/{id}/stock")

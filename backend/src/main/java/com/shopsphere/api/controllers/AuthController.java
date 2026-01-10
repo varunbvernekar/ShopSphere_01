@@ -48,7 +48,7 @@ public class AuthController {
                 .password(req.getPassword())
                 .phoneNumber(req.getPhoneNumber())
                 .address(req.getAddress())
-                .role(req.getRole() != null ? req.getRole() : com.shopsphere.api.domain.enums.UserRole.CUSTOMER)
+                .role(com.shopsphere.api.domain.enums.UserRole.CUSTOMER) // Security: Hardcode to CUSTOMER
                 .gender(req.getGender())
                 .dateOfBirth(req.getDateOfBirth())
                 .build();

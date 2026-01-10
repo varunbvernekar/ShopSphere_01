@@ -38,35 +38,35 @@
       </div>
 
       <!-- Colors -->
-      <div class="customizer-section" *ngIf="colourValues.length">
+      <div class="customizer-section" *ngIf="colourOptions.length">
         <label>Select Color</label>
         <div class="option-grid option-grid-3">
-          <button *ngFor="let color of colourValues" type="button" (click)="selectColour(color)"
-            [class.option-selected]="selectedColor === color" class="option-pill">
-            {{ color }}
+          <button *ngFor="let opt of colourOptions" type="button" (click)="selectColour(opt.label)"
+            [class.option-selected]="selectedColor === opt.label" class="option-pill">
+            {{ opt.label }}
           </button>
         </div>
       </div>
 
       <!-- Sizes -->
-      <div class="customizer-section" *ngIf="sizeValues.length">
+      <div class="customizer-section" *ngIf="sizeOptions.length">
         <label>Select Size</label>
         <div class="option-grid option-grid-5">
-          <button *ngFor="let size of sizeValues" type="button" (click)="selectSize(size)"
-            [class.option-selected]="selectedSize === size" class="option-pill">
-            {{ size }}
+          <button *ngFor="let opt of sizeOptions" type="button" (click)="selectSize(opt.label)"
+            [class.option-selected]="selectedSize === opt.label" class="option-pill">
+            {{ opt.label }}
           </button>
         </div>
       </div>
 
       <!-- Materials -->
-      <div class="customizer-section" *ngIf="materialValues.length">
+      <div class="customizer-section" *ngIf="materialOptions.length">
         <label>Select Material</label>
         <div class="material-list">
-          <button *ngFor="let m of materialValues" type="button" (click)="selectMaterial(m)" class="material-item"
-            [class.option-selected]="selectedMaterial === m">
-            <span>{{ m }}</span>
-            <span *ngIf="selectedMaterial === m">✔</span>
+          <button *ngFor="let opt of materialOptions" type="button" (click)="selectMaterial(opt.label)"
+            class="material-item" [class.option-selected]="selectedMaterial === opt.label">
+            <span>{{ opt.label }}</span>
+            <span *ngIf="selectedMaterial === opt.label">✔</span>
           </button>
         </div>
       </div>

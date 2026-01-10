@@ -3,6 +3,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { InventoryService } from '../../../services/inventory';
 import { ProductService } from '../../../services/product';
 import { Product } from '../../../models/product';
@@ -10,7 +11,7 @@ import { Product } from '../../../models/product';
 @Component({
   selector: 'app-admin-inventory',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './admin-inventory.html',
   styleUrls: ['./admin-inventory.css']
 })
@@ -40,6 +41,8 @@ export class AdminInventory implements OnInit {
 
   // Product Details Editing
   editingDetailsProduct: Product | null = null;
+  currentFile: File | null = null;
+
   editName = '';
   editDescription = '';
   editCategory = '';
@@ -155,6 +158,7 @@ export class AdminInventory implements OnInit {
 
   // --- Product Details Management ---
   openProductEditor(product: Product): void {
+    this.currentFile = null;
     this.editingDetailsProduct = product;
     this.editName = product.name;
     this.editDescription = product.description || '';
@@ -166,22 +170,23 @@ export class AdminInventory implements OnInit {
 
   closeProductEditor(): void {
     this.editingDetailsProduct = null;
+    this.currentFile = null;
   }
 
   onProductImageSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      const file = input.files[0];
+      this.currentFile = input.files[0];
       const reader = new FileReader();
 
       reader.onload = (e) => {
         const result = e.target?.result;
         if (typeof result === 'string') {
-          this.editImage = result; // Set the Base64 string as the image URL
+          this.editImage = result; // Set the Base64 string for preview only
         }
       };
 
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(this.currentFile);
     }
   }
 
@@ -200,13 +205,13 @@ export class AdminInventory implements OnInit {
 
     this.productService.updateProduct(updatedProduct).subscribe({
       next: () => {
-        alert('Product details updated successfully!');
+        alert('Product updated successfully!');
         this.refreshData();
         this.closeProductEditor();
       },
-      error: err => {
+      error: (err: any) => {
         console.error('Failed to update product details', err);
-        alert('Failed to update product details');
+        alert('Failed to update product');
       }
     });
   }

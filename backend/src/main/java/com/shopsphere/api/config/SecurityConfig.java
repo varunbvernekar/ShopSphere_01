@@ -26,20 +26,43 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(auth -> auth
-                // Public Endpoints
-                .requestMatchers("/api/v1/auth/**").permitAll()
-                .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/products/**").permitAll()
-                // Protected Endpoints
-                .anyRequest().authenticated()
-            )
-            .sessionManagement(session -> session
-                .sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.STATELESS)
-            )
-            .authenticationProvider(authenticationProvider())
-            .addFilterBefore(jwtAuthFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        // Public Endpoints
+                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/products/**").permitAll()
+                        .requestMatchers("/api/v1/uploads/**").permitAll()
+
+                        // Admin-only Endpoints (Product Mutations)
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/v1/products",
+                                "/api/v1/products/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(org.springframework.http.HttpMethod.PUT, "/api/v1/products",
+                                "/api/v1/products/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(org.springframework.http.HttpMethod.PATCH, "/api/v1/products",
+                                "/api/v1/products/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/v1/products",
+                                "/api/v1/products/**")
+                        .hasRole("ADMIN")
+
+                        // Orders Access Control
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/orders")
+                        .authenticated()
+                        .requestMatchers(org.springframework.http.HttpMethod.PUT, "/api/v1/orders/**").hasRole("ADMIN")
+                        .requestMatchers(org.springframework.http.HttpMethod.PATCH, "/api/v1/orders/**")
+                        .hasRole("ADMIN")
+
+                        // Protected Endpoints (User specific orders, profile, etc.)
+                        .anyRequest().authenticated())
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(
+                                org.springframework.security.config.http.SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthFilter,
+                        org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -56,7 +79,6 @@ public class SecurityConfig {
         return source;
     }
 
-
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -67,12 +89,16 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // Since frontend sends raw password essentially and we stored it in plan text initially
-        // Ideally we use BCrypt, but for existing users in DB (like admin) we must be careful.
-        // For now, to maintain compatibility with the "json-server" style raw passwords:
+        // Since frontend sends raw password essentially and we stored it in plan text
+        // initially
+        // Ideally we use BCrypt, but for existing users in DB (like admin) we must be
+        // careful.
+        // For now, to maintain compatibility with the "json-server" style raw
+        // passwords:
         // Use NoOp (Not secure, but works for this demo context).
         // OR switch to BCrypt but new users will have hashes, logic must handle that.
-        // Given earlier conversation: "Password hashing was intentionally skipped for simplicity"
+        // Given earlier conversation: "Password hashing was intentionally skipped for
+        // simplicity"
         return org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance();
     }
 

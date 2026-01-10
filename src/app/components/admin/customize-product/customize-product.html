@@ -84,14 +84,14 @@
                 <div class="customization-section" *ngFor="let option of editingCustomOptions">
                     <h4>{{ option.type | titlecase }} Options</h4>
                     <div class="option-values-list">
-                        <div class="option-value-item" *ngFor="let value of option.values">
+                        <div class="option-value-item" *ngFor="let item of option.options">
                             <div class="value-info">
-                                <span class="value-name">{{ value }}</span>
-                                <span class="price-adjustment" *ngIf="option.priceAdjustment[value]">
-                                    +₹{{ option.priceAdjustment[value] }}
+                                <span class="value-name">{{ item.label }}</span>
+                                <span class="price-adjustment" *ngIf="item.priceModifier">
+                                    {{ item.priceModifier > 0 ? '+' : '' }}₹{{ item.priceModifier }}
                                 </span>
                             </div>
-                            <button class="remove-btn" (click)="removeCustomOptionValue(option.type, value)">
+                            <button class="remove-btn" (click)="removeCustomOptionValue(option.type, item.label)">
                                 <span class="material-symbols-rounded">delete</span>
                             </button>
                         </div>

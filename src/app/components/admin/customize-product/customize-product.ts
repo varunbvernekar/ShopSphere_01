@@ -93,26 +93,26 @@ export class CustomizeProduct implements OnInit {
         if (!optionGroup) {
             optionGroup = {
                 type: this.newOptionType,
-                values: [],
-                priceAdjustment: {}
+                options: []
             };
             this.editingCustomOptions.push(optionGroup);
         }
 
-        if (!optionGroup.values.includes(this.newOptionValue)) {
-            optionGroup.values.push(this.newOptionValue);
-            optionGroup.priceAdjustment[this.newOptionValue] = this.newOptionPrice || 0;
+        if (!optionGroup.options.some(o => o.label === this.newOptionValue)) {
+            optionGroup.options.push({
+                label: this.newOptionValue,
+                priceModifier: this.newOptionPrice || 0
+            });
         }
 
         this.newOptionValue = '';
         this.newOptionPrice = 0;
     }
 
-    removeCustomOptionValue(optionType: CustomOptionType, value: string): void {
+    removeCustomOptionValue(optionType: CustomOptionType, valueLabel: string): void {
         const optionGroup = this.editingCustomOptions.find(o => o.type === optionType);
         if (optionGroup) {
-            optionGroup.values = optionGroup.values.filter(v => v !== value);
-            delete optionGroup.priceAdjustment[value];
+            optionGroup.options = optionGroup.options.filter(o => o.label !== valueLabel);
         }
     }
 

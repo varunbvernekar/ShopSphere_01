@@ -1,9 +1,8 @@
-// src/app/services/product.ts
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Product, CustomOptionGroup } from '../models/product';
 import { Observable, map, switchMap } from 'rxjs';
+import { DEFAULT_CUSTOM_OPTIONS } from '../config/product.config';
 
 @Injectable({
   providedIn: 'root'
@@ -19,53 +18,40 @@ export class ProductService {
    */
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.apiUrl}/products`).pipe(
-      map(products =>
-        products.map(p => ({
-          ...p,
-          productId: p.productId || (p as any).id,
-          customOptions:
-            p.customOptions && p.customOptions.length
-              ? p.customOptions
-              : this.getDefaultCustomOptions()
-        }))
-      )
+      map(products => products.map(p => this.normalizeProduct(p)))
     );
   }
 
   /**
-   * Add a new product to db.json.
-   * Automatically creates a productId if not provided.
+   * Add a new product with an optional image file.
+   * Uses FormData for multipart/form-data support.
    */
   addProduct(
-    partial: Omit<Product, 'productId'> & { productId?: string }
+    product: Omit<Product, 'productId'> & { productId?: string },
+    imageFile?: File
   ): Observable<Product> {
-    return this.getProducts().pipe(
-      map(products => {
-        const nextNumber = products.length + 1;
-        const productId =
-          partial.productId ?? `P${String(nextNumber).padStart(3, '0')}`;
+    const formData = new FormData();
 
-        const newProduct: Product = {
-          ...partial,
-          productId,
-          isActive: partial.isActive ?? true,
-          customOptions:
-            partial.customOptions && partial.customOptions.length
-              ? partial.customOptions
-              : this.getDefaultCustomOptions()
-        };
+    // Prepare product payload
+    // Generation happens on backend usually, but for continuity:
+    const nextId = `P${Date.now().toString().slice(-3)}`;
+    const newProduct: Product = {
+      ...product,
+      productId: product.productId || nextId,
+      isActive: product.isActive ?? true,
+      customOptions: product.customOptions && product.customOptions.length
+        ? product.customOptions
+        : this.getDefaultCustomOptions()
+    };
 
-        // json-server needs "id" field, we can use productId as id.
-        const payload: Product & { id: string } = {
-          ...newProduct,
-          id: productId
-        };
+    formData.append('product', JSON.stringify(newProduct));
 
-        return payload;
-      }),
-      switchMap(payload =>
-        this.http.post<Product>(`${this.apiUrl}/products`, payload)
-      )
+    if (imageFile) {
+      formData.append('image', imageFile);
+    }
+
+    return this.http.post<Product>(`${this.apiUrl}/products`, formData).pipe(
+      map(p => this.normalizeProduct(p))
     );
   }
 
@@ -84,7 +70,9 @@ export class ProductService {
       ...product,
       id: product.productId
     };
-    return this.http.put<Product>(`${this.apiUrl}/products/${product.productId}`, payload);
+    return this.http.put<Product>(`${this.apiUrl}/products/${product.productId}`, payload).pipe(
+      map(p => this.normalizeProduct(p))
+    );
   }
 
   /** Delete a product */
@@ -118,35 +106,25 @@ export class ProductService {
     );
   }
 
+  private normalizeProduct(p: Product): Product {
+    let previewImage = p.previewImage || '';
+    if (previewImage.startsWith('/api')) {
+      previewImage = `http://localhost:8080${previewImage}`;
+    }
+
+    return {
+      ...p,
+      productId: p.productId || (p as any).id,
+      previewImage,
+      customOptions:
+        p.customOptions && p.customOptions.length
+          ? p.customOptions
+          : this.getDefaultCustomOptions()
+    };
+  }
+
   // ---- default custom options (used if db.json doesn't define them) ----
   private getDefaultCustomOptions(): CustomOptionGroup[] {
-    return [
-      {
-        type: 'colour',
-        values: ['Silver', 'Gold', 'Rose Gold'],
-        priceAdjustment: {
-          Silver: 0,
-          Gold: 15,
-          'Rose Gold': 10
-        }
-      },
-      {
-        type: 'size',
-        values: ['Small', 'Medium', 'Large'],
-        priceAdjustment: {
-          Small: -5,
-          Medium: 0,
-          Large: 10
-        }
-      },
-      {
-        type: 'material',
-        values: ['Standard', 'Premium'],
-        priceAdjustment: {
-          Standard: 0,
-          Premium: 25
-        }
-      }
-    ];
+    return DEFAULT_CUSTOM_OPTIONS;
   }
 }

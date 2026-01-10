@@ -3,12 +3,14 @@
 // OPTION TYPES MUST MATCH EXISTING COMPONENT CODE
 export type CustomOptionType = 'colour' | 'size' | 'material';
 
+export interface CustomOptionItem {
+  label: string;
+  priceModifier: number;
+}
+
 export interface CustomOptionGroup {
   type: CustomOptionType;
-  // e.g. ['Red', 'Blue', 'Green']
-  values: string[];
-  // e.g. { Red: 0, Blue: 10, Green: 15 }
-  priceAdjustment: { [value: string]: number };
+  options: CustomOptionItem[];
 }
 
 export interface Product {

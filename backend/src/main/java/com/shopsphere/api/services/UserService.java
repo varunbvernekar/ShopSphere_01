@@ -13,11 +13,16 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     public User registerUser(User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new RuntimeException("Email already taken");
         }
-        // In a real app we'd hash the password here. For this demo we'll store as plain/as-is since frontend was doing that with json-server
+        // In a real app we'd hash the password here. For this demo we'll store as
+        // plain/as-is since frontend was doing that with json-server
         return userRepository.save(user);
     }
 
@@ -33,14 +38,14 @@ public class UserService {
 
     public User updateUser(Long id, User updatedUser) {
         User existing = getUserById(id);
-        
+
         // Update allowed fields
         existing.setName(updatedUser.getName());
         existing.setPhoneNumber(updatedUser.getPhoneNumber());
         existing.setAddress(updatedUser.getAddress());
         existing.setGender(updatedUser.getGender());
         existing.setDateOfBirth(updatedUser.getDateOfBirth());
-        
+
         // Only update password if provided and not empty
         if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
             existing.setPassword(updatedUser.getPassword());

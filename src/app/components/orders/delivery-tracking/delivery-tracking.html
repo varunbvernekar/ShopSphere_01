@@ -5,7 +5,7 @@
   <div class="order-header-card">
     <div class="order-header-info">
       <h2 class="order-header-title">Order {{ getOrderId(order) }}</h2>
-      <p class="order-header-date">Placed on {{ order.placedOn }}</p>
+      <p class="order-header-date">Placed on {{ order.placedOn | date:'mediumDate' }}</p>
     </div>
     <button class="order-status-button" [ngClass]="order.status">
       {{ order.status }}
@@ -15,7 +15,8 @@
   <!-- Product Information -->
   <div class="order-card product-card" *ngFor="let item of order.items">
     <div class="product-info-container">
-      <img [src]="item.image" alt="Product image" class="product-image" />
+      <img [src]="item.image || 'assets/images/placeholder.jpg'"
+        (error)="$event.target.src='assets/images/placeholder.jpg'" alt="Product image" class="product-image" />
       <div class="product-details">
         <h3 class="product-name">{{ item.name }}</h3>
         <div class="product-customization">

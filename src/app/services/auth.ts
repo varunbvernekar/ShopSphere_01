@@ -43,11 +43,9 @@ export class AuthService {
   register(user: User): Observable<boolean> {
     return this.http.post<any>(`${this.apiUrl}/register`, user).pipe(
       map(response => {
-        if (response && response.token) {
-          this.setSession(response.user, response.token);
-          return true;
-        }
-        return false;
+        // We no longer auto-login (setSession) after registration.
+        // The user will be redirected to /login by the register component.
+        return !!(response);
       })
     );
   }

@@ -132,7 +132,7 @@ export class Payment implements OnInit {
     this.errorMessage = '';
 
     const today = new Date();
-    const placedOn = today.toLocaleDateString('en-IN');
+    const placedOn = today.toISOString();
     const estimated = new Date();
     estimated.setDate(today.getDate() + 7);
     const estimatedDelivery = estimated.toLocaleDateString('en-IN');

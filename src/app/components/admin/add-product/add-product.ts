@@ -2,7 +2,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ProductService } from '../../../services/product';
+import { Product } from '../../../models/product';
 
 @Component({
     selector: 'app-admin-add-product',
@@ -17,20 +19,25 @@ export class AdminAddProduct {
         description: '',
         category: '',
         basePrice: 0,
-        previewImage: '',
         stockLevel: 0,
-        reorderThreshold: 0
+        reorderThreshold: 0,
+        previewImage: ''
     };
 
     selectedFileName = '';
     imagePreview = '';
+    selectedFile: File | null = null;
     showSuccessMessage = false;
 
-    constructor(private productService: ProductService) { }
+    constructor(
+        private productService: ProductService,
+        private router: Router
+    ) { }
 
     onFileSelected(event: any): void {
         const file = event.target.files[0];
         if (file) {
+            this.selectedFile = file;
             this.selectedFileName = file.name;
             const reader = new FileReader();
             reader.onload = (e: any) => {
@@ -45,31 +52,32 @@ export class AdminAddProduct {
             return;
         }
 
-        const productImage = this.imagePreview || 'assets/images/placeholder.jpg';
+        const productPayload = {
+            name: this.newProduct.name,
+            description: this.newProduct.description,
+            category: this.newProduct.category,
+            basePrice: Number(this.newProduct.basePrice),
+            stockLevel: Number(this.newProduct.stockLevel),
+            reorderThreshold: Number(this.newProduct.reorderThreshold),
+            customOptions: [],
+            isActive: true,
+            previewImage: '' // Handled by backend for new uploads
+        };
 
         this.productService
-            .addProduct({
-                name: this.newProduct.name,
-                description: this.newProduct.description,
-                category: this.newProduct.category,
-                basePrice: Number(this.newProduct.basePrice),
-                previewImage: productImage,
-                stockLevel: Number(this.newProduct.stockLevel),
-                reorderThreshold: Number(this.newProduct.reorderThreshold),
-                customOptions: [],
-                isActive: true
-            })
+            .addProduct(productPayload, this.selectedFile || undefined)
             .subscribe({
                 next: () => {
                     this.showSuccessMessage = true;
                     this.resetForm();
 
-                    // Hide success message after 3 seconds
+                    // Redirect back to inventory after a short delay
                     setTimeout(() => {
                         this.showSuccessMessage = false;
-                    }, 3000);
+                        this.router.navigate(['/admin/inventory']);
+                    }, 2000);
                 },
-                error: err => {
+                error: (err: any) => {
                     console.error('Failed to add product', err);
                     alert('Failed to add product');
                 }
@@ -88,6 +96,7 @@ export class AdminAddProduct {
         };
         this.selectedFileName = '';
         this.imagePreview = '';
+        this.selectedFile = null;
 
         const fileInput = document.getElementById('productImage') as HTMLInputElement;
         if (fileInput) {

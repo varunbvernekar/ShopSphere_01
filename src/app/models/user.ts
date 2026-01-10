@@ -13,7 +13,7 @@ export interface User {
   name: string;
   email: string;
   password?: string; // UI only; no real backend
-  role: UserRole;
+  role?: UserRole;
   phoneNumber?: string;
   address?: Address;
   dateOfBirth?: string;

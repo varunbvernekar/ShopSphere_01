@@ -19,7 +19,6 @@ export class Register {
   phoneNumber = '';
   password = '';
   confirmPassword = '';
-  role: UserRole = 'CUSTOMER';
 
   errorMessage = '';
 
@@ -42,7 +41,6 @@ export class Register {
       email: this.email,
       phoneNumber: this.phoneNumber || '',
       password: this.password,
-      role: this.role,
       address: {
         street: '',
         city: '',

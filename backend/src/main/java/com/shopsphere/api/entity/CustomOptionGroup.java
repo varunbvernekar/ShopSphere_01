@@ -23,13 +23,6 @@ public class CustomOptionGroup {
     private String type;
 
     @ElementCollection
-    @CollectionTable(name = "custom_option_values", joinColumns = @JoinColumn(name = "option_group_id"))
-    @Column(name = "value_name")
-    private List<String> values;
-
-    @ElementCollection
-    @CollectionTable(name = "custom_option_price_adjustments", joinColumns = @JoinColumn(name = "option_group_id"))
-    @MapKeyColumn(name = "option_value")
-    @Column(name = "adjustment_amount")
-    private Map<String, Double> priceAdjustment;
+    @CollectionTable(name = "custom_option_items", joinColumns = @JoinColumn(name = "option_group_id"))
+    private List<CustomOptionItem> options;
 }

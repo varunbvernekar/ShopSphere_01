@@ -39,26 +39,26 @@ export class ProductCustomizer implements OnInit {
       o => o.type === 'material'
     );
 
-    this.selectedColor = colourOpt?.values[0] ?? '';
-    this.selectedSize = sizeOpt?.values[0] ?? '';
-    this.selectedMaterial = materialOpt?.values[0] ?? '';
+    this.selectedColor = colourOpt?.options[0]?.label ?? '';
+    this.selectedSize = sizeOpt?.options[0]?.label ?? '';
+    this.selectedMaterial = materialOpt?.options[0]?.label ?? '';
 
     this.recalculatePrice();
   }
 
-  get colourValues(): string[] {
+  get colourOptions() {
     return (
-      this.product.customOptions.find(o => o.type === 'colour')?.values ?? []
+      this.product.customOptions.find(o => o.type === 'colour')?.options ?? []
     );
   }
 
-  get sizeValues(): string[] {
-    return this.product.customOptions.find(o => o.type === 'size')?.values ?? [];
+  get sizeOptions() {
+    return this.product.customOptions.find(o => o.type === 'size')?.options ?? [];
   }
 
-  get materialValues(): string[] {
+  get materialOptions() {
     return (
-      this.product.customOptions.find(o => o.type === 'material')?.values ?? []
+      this.product.customOptions.find(o => o.type === 'material')?.options ?? []
     );
   }
 
@@ -84,23 +84,15 @@ export class ProductCustomizer implements OnInit {
 
     let current = this.product.basePrice;
 
-    for (const option of this.product.customOptions) {
-      let chosen: string | undefined;
+    for (const group of this.product.customOptions) {
+      let selectedLabel = '';
+      if (group.type === 'colour') selectedLabel = this.selectedColor;
+      else if (group.type === 'size') selectedLabel = this.selectedSize;
+      else if (group.type === 'material') selectedLabel = this.selectedMaterial;
 
-      if (option.type === 'colour') {
-        chosen = this.selectedColor;
-      } else if (option.type === 'size') {
-        chosen = this.selectedSize;
-      } else if (option.type === 'material') {
-        chosen = this.selectedMaterial;
-      }
-
-      if (
-        chosen &&
-        option.priceAdjustment &&
-        option.priceAdjustment[chosen] != null
-      ) {
-        current += option.priceAdjustment[chosen];
+      const selectedOption = group.options.find(o => o.label === selectedLabel);
+      if (selectedOption) {
+        current += selectedOption.priceModifier;
       }
     }
 

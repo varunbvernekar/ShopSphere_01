@@ -29,7 +29,7 @@
               </div>
 
               <div class="order-list-meta">
-                <span class="order-date">{{ order.placedOn }}</span>
+                <span class="order-date">{{ order.placedOn | date:'mediumDate' }}</span>
                 <span class="order-price">₹{{ order.amount }}</span>
               </div>
             </div>
@@ -103,7 +103,7 @@
             <tr *ngFor="let order of orders">
               <td>#{{ order.id }}</td>
               <td>{{ order.userId }}</td>
-              <td>{{ order.placedOn }}</td>
+              <td>{{ order.placedOn | date:'short' }}</td>
               <td>{{ order.amount }}</td>
               <td>
                 <select [(ngModel)]="order.status" (change)="onAdminStatusChange(order, order.status)">
@@ -149,7 +149,8 @@
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
               <div>
                 <h3 style="margin: 0; font-size: 20px;">Order #{{ selectedAdminOrder.id }}</h3>
-                <p style="margin: 4px 0 0; color: #6b7280; font-size: 14px;">Placed on {{ selectedAdminOrder.placedOn }}
+                <p style="margin: 4px 0 0; color: #6b7280; font-size: 14px;">Placed on {{ selectedAdminOrder.placedOn |
+                  date:'medium' }}
                   by User #{{ selectedAdminOrder.userId }}</p>
               </div>
               <div class="status-pill" [ngClass]="selectedAdminOrder.status"
@@ -203,7 +204,8 @@
               style="border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; margin-bottom: 24px;">
               <div *ngFor="let item of selectedAdminOrder.items"
                 style="display: flex; align-items: center; padding: 12px; border-bottom: 1px solid #e5e7eb; gap: 12px;">
-                <img [src]="item.image || 'assets/images/placeholder.jpg'" alt="{{ item.name }}"
+                <img [src]="item.image || 'assets/images/placeholder.jpg'"
+                  (error)="$event.target.src='assets/images/placeholder.jpg'" alt="{{ item.name }}"
                   style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; background: #f3f4f6;">
                 <div style="flex: 1;">
                   <div style="font-weight: 500;">{{ item.name }}</div>
