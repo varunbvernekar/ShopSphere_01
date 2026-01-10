@@ -38,15 +38,8 @@ export class OrderService {
 
   /** Cancel an order */
   cancelOrder(orderId: number): Observable<Order> {
-    return this.http.get<Order>(`${this.apiUrl}/orders/${orderId}`).pipe(
-      switchMap(order => {
-        if (order.status === 'Shipped' || order.status === 'Delivered') {
-          throw new Error('Cannot cancel order that has already been shipped or delivered');
-        }
-        const updatedOrder = { ...order, status: 'Cancelled' as const };
-        return this.updateOrder(updatedOrder);
-      })
-    );
+    // Backend handles status validation (e.g., throwing if Shipped)
+    return this.http.put<Order>(`${this.apiUrl}/orders/${orderId}/status`, { status: 'Cancelled' });
   }
 
   // Helper to cancel that reuses updateOrder

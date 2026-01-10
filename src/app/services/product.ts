@@ -31,25 +31,10 @@ export class ProductService {
     imageFile?: File
   ): Observable<Product> {
     const formData = new FormData();
-
-    // Prepare product payload
-    // Generation happens on backend usually, but for continuity:
-    const nextId = `P${Date.now().toString().slice(-3)}`;
-    const newProduct: Product = {
-      ...product,
-      productId: product.productId || nextId,
-      isActive: product.isActive ?? true,
-      customOptions: product.customOptions && product.customOptions.length
-        ? product.customOptions
-        : this.getDefaultCustomOptions()
-    };
-
-    formData.append('product', JSON.stringify(newProduct));
-
+    formData.append('product', JSON.stringify(product));
     if (imageFile) {
       formData.append('image', imageFile);
     }
-
     return this.http.post<Product>(`${this.apiUrl}/products`, formData).pipe(
       map(p => this.normalizeProduct(p))
     );
@@ -82,14 +67,8 @@ export class ProductService {
 
   /** Update product stock level */
   updateStock(productId: string, stockLevel: number): Observable<Product> {
-    return this.getProductById(productId).pipe(
-      switchMap(product => {
-        if (!product) {
-          throw new Error('Product not found');
-        }
-        const updated: Product = { ...product, stockLevel };
-        return this.updateProduct(updated);
-      })
+    return this.http.put<Product>(`${this.apiUrl}/products/${productId}/stock`, { stockLevel }).pipe(
+      map(p => this.normalizeProduct(p))
     );
   }
 
