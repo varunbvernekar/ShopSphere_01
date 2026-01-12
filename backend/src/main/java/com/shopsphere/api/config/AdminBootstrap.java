@@ -1,6 +1,6 @@
 package com.shopsphere.api.config;
 
-import com.shopsphere.api.domain.enums.UserRole;
+import com.shopsphere.api.enums.UserRole;
 import com.shopsphere.api.entity.User;
 import com.shopsphere.api.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;

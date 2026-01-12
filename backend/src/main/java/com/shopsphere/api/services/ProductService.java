@@ -1,14 +1,19 @@
 package com.shopsphere.api.services;
 
-import com.shopsphere.api.entity.Product;
+import com.shopsphere.api.dto.requestDTO.ProductRequest;
+import com.shopsphere.api.dto.responseDTO.ProductResponse;
 import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
-    List<Product> getAllProducts();
-    Optional<Product> getProductById(String id);
-    Product saveProduct(Product product);
+    List<ProductResponse> getAllProducts();
+
+    Optional<ProductResponse> getProductById(String id);
+
+    ProductResponse saveProduct(ProductRequest productRequest);
+
+    ProductResponse updateProduct(String id, ProductRequest productRequest);
+
     void deleteProduct(String id);
-    Product updateStock(String productId, Integer stockLevel);
-    Product updateThreshold(String productId, Integer threshold);
+    // Removed direct stock update methods, now handled by InventoryService
 }

@@ -1,6 +1,6 @@
 package com.shopsphere.api.entity;
 
-import com.shopsphere.api.domain.enums.UserRole;
+import com.shopsphere.api.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

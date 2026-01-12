@@ -57,7 +57,11 @@ export class OrdersPage implements OnInit {
 
     request$.subscribe({
       next: orders => {
-        this.orders = orders;
+        // Ensure logistics object exists to prevent template errors
+        this.orders = orders.map(o => ({
+          ...o,
+          logistics: o.logistics || { carrier: '', trackingId: '', currentLocation: '' }
+        }));
         this.selectedOrder = null;
         this.isLoading = false;
       },

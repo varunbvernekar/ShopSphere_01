@@ -1,6 +1,6 @@
 package com.shopsphere.api.entity;
 
-import com.shopsphere.api.domain.enums.OrderStatus;
+import com.shopsphere.api.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

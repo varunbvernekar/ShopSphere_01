@@ -33,7 +33,5 @@ public class Product {
     @JoinColumn(name = "product_id")
     private List<CustomOptionGroup> customOptions;
 
-    private Integer stockLevel;
-    private Integer reorderThreshold;
     private Boolean isActive;
 }
