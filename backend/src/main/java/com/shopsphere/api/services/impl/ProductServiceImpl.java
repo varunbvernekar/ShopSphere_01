@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@lombok.extern.slf4j.Slf4j
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
@@ -23,6 +24,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductResponse> getAllProducts() {
+        log.debug("Fetching all products");
         return productRepository.findAll().stream()
                 .map(product -> {
                     ProductResponse response = ProductResponse.fromEntity(product);
@@ -37,6 +39,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Optional<ProductResponse> getProductById(String id) {
+        log.debug("Fetching product by ID: {}", id);
         return productRepository.findById(id)
                 .map(product -> {
                     ProductResponse response = ProductResponse.fromEntity(product);
@@ -50,6 +53,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ProductResponse saveProduct(ProductRequest productRequest) {
+        log.info("Creating new product: {}", productRequest.getName());
         Product product = ProductRequest.toEntity(productRequest);
 
         String generatedId = "P" + System.currentTimeMillis();
@@ -60,6 +64,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         Product savedProduct = productRepository.save(product);
+        log.info("Product created with ID: {}", generatedId);
 
         // Initialize Inventory
         inventoryService.initializeInventory(generatedId, productRequest.getStockLevel(),
@@ -67,18 +72,18 @@ public class ProductServiceImpl implements ProductService {
 
         // Return response with inventory info
         ProductResponse response = ProductResponse.fromEntity(savedProduct);
-        // The inventory details will be fetched by subsequent calls to getProductById
-        // or getAllProducts
-        // or if the client needs them immediately, they should call getInventory
-        // separately.
         return response;
     }
 
     @Override
     @Transactional
     public ProductResponse updateProduct(String id, ProductRequest productRequest) {
+        log.info("Updating product ID: {}", id);
         Product existing = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> {
+                    log.error("Product not found with ID: {}", id);
+                    return new RuntimeException("Product not found");
+                });
 
         Product updatedState = ProductRequest.toEntity(productRequest);
         updatedState.setProductId(id);
@@ -86,9 +91,8 @@ public class ProductServiceImpl implements ProductService {
         Product savedProduct = productRepository.save(updatedState);
 
         // Update inventory if provided in request?
-        // Usually specific inventory endpoint is better, but for "Edit Product" page
-        // convenience:
         if (productRequest.getStockLevel() != null || productRequest.getReorderThreshold() != null) {
+            log.info("Updating inventory for product ID: {}", id);
             var stockReq = new com.shopsphere.api.dto.requestDTO.StockUpdateRequest();
             stockReq.setQuantity(productRequest.getStockLevel());
             stockReq.setThreshold(productRequest.getReorderThreshold());
@@ -99,13 +103,16 @@ public class ProductServiceImpl implements ProductService {
         var inventory = inventoryService.getInventory(id);
         response.setStockLevel(inventory.getQuantity());
         response.setReorderThreshold(inventory.getReorderThreshold());
+        log.info("Product ID: {} updated successfully", id);
         return response;
     }
 
     @Override
     @Transactional
     public void deleteProduct(String id) {
+        log.warn("Deleting product ID: {}", id);
         productRepository.deleteById(id);
         inventoryService.deleteInventory(id);
+        log.info("Product ID: {} deleted successfully", id);
     }
 }

@@ -37,6 +37,9 @@ public class SecurityConfig {
                                                                 "/api/v1/products/**")
                                                 .permitAll()
                                                 .requestMatchers("/api/v1/uploads/**").permitAll()
+                                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**",
+                                                                "/swagger-ui.html")
+                                                .permitAll()
 
                                                 // Admin-only Endpoints (Product Mutations)
                                                 .requestMatchers(org.springframework.http.HttpMethod.POST,

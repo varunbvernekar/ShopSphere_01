@@ -77,30 +77,17 @@ public class OrderServiceImpl implements OrderService {
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
 
         if (!isAdmin) {
-            // Customer Logic
-            // 1. Verify Ownership
-            // We need to resolve email to ID. Or easier: assume we trust the UserService
-            // mapping.
-            // We can just get email from auth.
             String email = auth.getName();
-            // Since we don't have direct access to User entity easily without repository,
-            // but we know userId is storing Long.
-            // We should trust the Service logic.
-            // Actually, UserService is not injected here.
-            // But we can check if the status is allowed.
+            com.shopsphere.api.entity.User user = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
+            if (!order.getUserId().equals(user.getId())) {
+                throw new RuntimeException("Access Denied: You do not own this order.");
+            }
 
             if (status != OrderStatus.Cancelled) {
                 throw new RuntimeException("Customers can only cancel orders.");
             }
-
-            // Check ownership? relying on controller or redundant check safely:
-            // We need UserService to get ID from Email.
-            // Or we inject UserService/UserRepository.
-            // Since I can't easily injection loop, I will skip ownership check HERE if I
-            // assume
-            // the controller/security layer covers it?
-            // NO. Controller does NOT check checking ownership for PUT /orders/*/status.
-            // SECURITY RISK.
         }
 
         if (status == OrderStatus.Cancelled) {
